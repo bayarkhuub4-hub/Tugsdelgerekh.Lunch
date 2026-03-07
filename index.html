@@ -4,156 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lunch App - Төгсдэлгэрэх</title>
-    <!-- Фонтууд -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@100;300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --gold: #c5a059;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --text-dark: #3d2b1f;
+            --accent: #b8860b; /* Тансаг алтлаг */
+            --bg: #121826; /* Гүн саарал-хөх */
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            font-family: 'Montserrat', sans-serif; 
-            background: #fdfaf5; /* Гэгээлэг крем фон */
-            color: var(--text-dark); overflow: hidden;
+            font-family: 'Montserrat', sans-serif; background: var(--bg);
+            color: white; overflow: hidden;
         }
 
-        /* Арын хөдөлгөөнтэй зөөлөн фон */
-        .bg-circles {
+        /* 1. SPLASH SCREEN (LOGO) */
+        #splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(197, 160, 89, 0.05) 0%, rgba(255, 255, 255, 0) 50%),
-                        radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
-            z-index: -1;
+            background: #0a0e17; z-index: 2000; display: flex;
+            justify-content: center; align-items: center; transition: 1s ease;
         }
+        .logo-anim {
+            width: 150px; animation: pulseLogo 2s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px rgba(184, 134, 11, 0.4));
+        }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 
-        /* 1. ДОЛОО ХОНОГ СОНГОХ ЦЭС */
+        /* 2. WEEK SELECTOR */
         #weekSelector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1000; background: #fdfaf5;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1500; background: radial-gradient(circle at center, #1e293b, #0f172a);
+            display: none; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        .selector-card {
-            background: white; padding: 40px 20px; border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; width: 85%; max-width: 400px;
+        .week-card {
+            width: 85%; max-width: 350px; padding: 25px; margin: 12px;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: 20px; text-align: center;
+            font-family: 'Cinzel'; cursor: pointer; transition: 0.3s;
         }
+        .week-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
-        .week-btn {
-            width: 100%; padding: 18px; margin: 10px 0;
-            background: white; border: 1px solid #eee;
-            border-radius: 15px; font-family: 'Cinzel'; color: var(--text-dark);
-            font-size: 1rem; cursor: pointer; transition: 0.3s;
-        }
-        .week-btn:hover { background: #fdfaf5; border-color: var(--gold); color: var(--gold); }
-
-        /* 2. HEADER - ДЭЭД ХЭСЭГ */
+        /* 3. APP HEADER */
         .app-header {
-            position: absolute; top: 5%; width: 100%; z-index: 100; text-align: center;
+            position: absolute; top: 40px; width: 100%; z-index: 100;
+            text-align: center; pointer-events: none;
         }
-        .week-num { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 5px; }
-        .day-name { font-size: 2.2rem; font-weight: 300; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
+        .week-tag { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 5px; color: var(--accent); }
+        .day-name { font-size: 2.5rem; font-weight: 100; text-transform: uppercase; margin: 0; }
 
-        /* 3. SWIPER - APP ХӨДӨЛГӨӨН */
-        .swiper { width: 100%; height: 100%; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 50px; }
+        /* 4. MAIN SWIPER (VERTICAL) */
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { 
+            display: flex; flex-direction: column; justify-content: flex-start; 
+            align-items: center; padding-top: 140px; box-sizing: border-box; 
+        }
 
-        /* 4. FOOD IMAGE & FLOATING INFO */
-        .food-zone {
-            position: relative; width: 80vw; height: 35vh;
-            display: flex; justify-content: center; align-items: center;
-            margin-bottom: 20px;
+        /* FOOD AREA */
+        .food-box {
+            position: relative; width: 100%; display: flex;
+            flex-direction: column; align-items: center;
         }
         .food-img {
-            width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.1));
-            animation: floatPlate 5s ease-in-out infinite alternate;
+            width: 85vw; max-width: 380px; height: auto;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+            animation: float 6s ease-in-out infinite;
         }
-        @keyframes floatPlate { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* Glowing Nutrition Chips */
-        .nutri-chip {
-            position: absolute; padding: 8px 14px; background: rgba(255,255,255,0.7);
-            border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
-            border-radius: 50px; font-size: 0.65rem; font-weight: 600;
-            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.1);
-            color: var(--text-dark); z-index: 10;
+        /* MODERN NUTRITION BAR */
+        .nutri-bar {
+            margin-top: -10px; width: 85%; max-width: 400px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px); border-radius: 15px;
+            display: flex; justify-content: space-around; padding: 15px 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .nutri-chip span { color: var(--gold); display: block; font-size: 0.55rem; opacity: 0.7; }
-        
-        /* Бичвэр давхцахаас сэргийлж байрлалыг оновчтой болгосон */
-        .c1 { top: -10%; left: 5%; }
-        .c2 { top: 10%; right: -5%; }
-        .c3 { bottom: 0%; left: -5%; }
-        .c4 { bottom: -10%; right: 5%; }
+        .n-item { text-align: center; flex: 1; }
+        .n-val { display: block; font-weight: 700; font-size: 0.9rem; color: #fff; }
+        .n-lab { display: block; font-size: 0.55rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
-        /* 5. BOTTOM INFO CARD */
-        .bottom-glass {
-            width: 90%; max-width: 450px;
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px; padding: 25px; box-sizing: border-box;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            margin-bottom: 5vh;
+        /* 5. BOTTOM CARD (RATING) */
+        .bottom-card {
+            position: absolute; bottom: 40px; width: 90%; max-width: 450px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(30px); border-radius: 25px;
+            padding: 20px; box-sizing: border-box; text-align: center;
         }
-
-        .calorie-tag {
-            color: var(--gold); font-size: 0.7rem; font-weight: bold;
-            border: 1px solid var(--gold); padding: 4px 12px; border-radius: 50px;
-            display: inline-block; margin-bottom: 12px;
+        .calorie-badge {
+            font-size: 0.7rem; font-weight: 700; color: var(--accent);
+            letter-spacing: 2px; margin-bottom: 8px; display: block;
         }
-        .meal-desc { font-size: 1rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4; color: #4a3728; }
+        .meal-title { font-size: 1rem; font-weight: 300; margin-bottom: 20px; opacity: 0.9; line-height: 1.4; }
 
-        /* Үнэлгээ */
-        .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .star { font-size: 2rem; color: #ddd; cursor: pointer; transition: 0.3s; }
-        .star.active { color: #f1c40f; filter: drop-shadow(0 0 5px rgba(241,196,15,0.4)); }
+        .stars { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
+        .star { font-size: 2rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .star.active { color: #ffcc00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.5); }
 
-        .comment-area {
-            width: 100%; background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 10px; font-family: 'Montserrat';
-            font-size: 0.8rem; height: 60px; resize: none; outline: none;
+        .comment-field {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
+            border-radius: 15px; padding: 12px; color: white; font-family: 'Montserrat';
+            font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box;
         }
 
-        /* Menu Button */
-        .home-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 1001;
-            background: var(--glass-bg); border: none; color: var(--gold);
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;
+        /* SNOW OVERLAY */
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; opacity: 0.3; }
+
+        .back-menu {
+            position: fixed; top: 25px; left: 20px; z-index: 1600;
+            background: var(--glass); border: none; color: white; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-circles"></div>
+    <!-- Canvas Snow -->
+    <canvas id="canvas-snow"></canvas>
 
-    <!-- Week Selector -->
-    <div id="weekSelector">
-        <div class="selector-card">
-            <h2 style="font-family:'Cinzel'; color: var(--text-dark); margin-bottom: 25px;">Үдийн Хоол</h2>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 30px;">Долоо хоногоо сонгоно уу</p>
-            <button class="week-btn" onclick="loadWeek(1)">1-Р ДОЛОО ХОНОГ</button>
-            <button class="week-btn" onclick="loadWeek(2)">2-Р ДОЛОО ХОНОГ</button>
-            <button class="week-btn" onclick="loadWeek(3)">3-Р ДОЛОО ХОНОГ</button>
-        </div>
+    <!-- 1. Splash Screen -->
+    <div id="splash" onclick="hideSplash()">
+        <img src="logo.png" class="logo-anim" alt="Logo">
     </div>
 
-    <button class="home-btn" onclick="showMenu()">←</button>
+    <!-- 2. Week Selector -->
+    <div id="weekSelector">
+        <h2 style="font-family:'Cinzel'; margin-bottom: 40px; letter-spacing: 5px;">Цэс Сонгох</h2>
+        <div class="week-card" onclick="loadWeek(1)">1-Р ДОЛОО ХОНОГ</div>
+        <div class="week-card" onclick="loadWeek(2)">2-Р ДОЛОО ХОНОГ</div>
+        <div class="week-card" onclick="loadWeek(3)">3-Р ДОЛОО ХОНОГ</div>
+    </div>
+
+    <button class="back-menu" id="backBtn" onclick="showMenu()">←</button>
     <audio id="bgMusic" src="bg-music.mp3" loop></audio>
 
+    <!-- 3. Vertical Swiper -->
     <div class="swiper">
-        <div class="swiper-wrapper" id="swiperWrapper">
-            <!-- Slides dynamically injected here -->
-        </div>
+        <div class="swiper-wrapper" id="swiperWrapper"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // 15 хоолны мэдээлэл
         const mealData = {
             1: [
                 { day: "Даваа", name: "Ногооны зутан шөл, гоймонтой хуурга", cal: "640", p: "32г", f: "24г", c: "75г", fi: "10г", img: "mon1.png" },
@@ -162,81 +154,102 @@
                 { day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
                 { day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" }
             ],
-            2: [
-                // 2-р долоо хоног (Мэдээллээ энд нэмээрэй)
-                { day: "Даваа", name: "Өдрийн хоол 2-1", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "mon2.png" },
-                { day: "Мягмар", name: "Өдрийн хоол 2-2", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "tue2.png" },
-                { day: "Лхагва", name: "Өдрийн хоол 2-3", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "wed2.png" },
-                { day: "Пүрэв", name: "Өдрийн хоол 2-4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "thu2.png" },
-                { day: "Баасан", name: "Өдрийн хоол 2-5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "fri2.png" }
-            ],
-            3: [
-                // 3-р долоо хоног (Мэдээллээ энд нэмээрэй)
-                { day: "Даваа", name: "Өдрийн хоол 3-1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-                { day: "Мягмар", name: "Өдрийн хоол 3-2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-                { day: "Лхагва", name: "Өдрийн хоол 3-3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-                { day: "Пүрэв", name: "Өдрийн хоол 3-4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-                { day: "Баасан", name: "Өдрийн хоол 3-5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
-            ]
+            2: [ /* 2-р долоо хоногийн 5 хоолны мэдээлэл энд орно */ ],
+            3: [ /* 3-р долоо хоногийн 5 хоолны мэдээлэл энд орно */ ]
         };
 
-        let mySwiper;
+        let vSwiper;
+
+        // Splash screen fade
+        setTimeout(() => { hideSplash(); }, 2500);
+
+        function hideSplash() {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            setTimeout(() => { 
+                splash.style.display = 'none'; 
+                document.getElementById('weekSelector').style.display = 'flex';
+            }, 1000);
+        }
 
         function loadWeek(num) {
             const wrapper = document.getElementById('swiperWrapper');
             wrapper.innerHTML = '';
             
-            mealData[num].forEach((m, idx) => {
+            const data = mealData[num] || mealData[1]; // Хоосон бол 1-ийг авна
+
+            data.forEach((m) => {
                 wrapper.innerHTML += `
                 <div class="swiper-slide">
                     <div class="app-header">
-                        <div class="week-num">WEEK ${num}</div>
+                        <div class="week-tag">WEEK ${num}</div>
                         <h2 class="day-name">${m.day}</h2>
                     </div>
 
-                    <div class="food-zone">
+                    <div class="food-box">
                         <img src="${m.img}" class="food-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
-                        <div class="nutri-chip c1"><span>Уураг</span>${m.p}</div>
-                        <div class="nutri-chip c2"><span>Өөх тос</span>${m.f}</div>
-                        <div class="nutri-chip c3"><span>Нүүрс ус</span>${m.c}</div>
-                        <div class="nutri-chip c4"><span>Эслэг</span>${m.fi}</div>
+                        <div class="nutri-bar">
+                            <div class="n-item"><span class="n-val">${m.p}</span><span class="n-lab">Уураг</span></div>
+                            <div class="n-item"><span class="n-val">${m.f}</span><span class="n-lab">Өөх</span></div>
+                            <div class="n-item"><span class="n-val">${m.c}</span><span class="n-lab">Нүүрс ус</span></div>
+                            <div class="n-item"><span class="n-val">${m.fi}</span><span class="n-lab">Эслэг</span></div>
+                        </div>
                     </div>
 
-                    <div class="bottom-glass">
-                        <div class="calorie-tag">${m.cal} ккал</div>
-                        <div class="meal-desc">${m.name}</div>
-                        <div class="stars" data-id="${num}-${idx}">
+                    <div class="bottom-card">
+                        <span class="calorie-badge">${m.cal} KCAL</span>
+                        <div class="meal-title">${m.name}</div>
+                        <div class="stars">
                             <span class="star" onclick="rate(this, 1)">★</span>
                             <span class="star" onclick="rate(this, 2)">★</span>
                             <span class="star" onclick="rate(this, 3)">★</span>
                             <span class="star" onclick="rate(this, 4)">★</span>
                             <span class="star" onclick="rate(this, 5)">★</span>
                         </div>
-                        <textarea class="comment-area" placeholder="Сэтгэгдэл бичих..."></textarea>
+                        <textarea class="comment-field" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                     </div>
                 </div>`;
             });
 
-            document.getElementById('weekSelector').style.transform = 'translateY(-100%)';
+            document.getElementById('weekSelector').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'block';
             document.getElementById('bgMusic').play().catch(() => {});
 
-            if (mySwiper) mySwiper.destroy();
-            mySwiper = new Swiper('.swiper', {
-                speed: 800,
-                effect: 'slide', // Илүү найдвартай App-like гулсалт
+            if (vSwiper) vSwiper.destroy();
+            vSwiper = new Swiper('.swiper', {
+                direction: 'vertical',
+                speed: 1000,
+                mousewheel: true,
                 parallax: true,
-                grabCursor: true
+                effect: 'slide'
             });
         }
 
         function showMenu() {
-            document.getElementById('weekSelector').style.transform = 'translateY(0)';
+            document.getElementById('weekSelector').style.display = 'flex';
+            document.getElementById('backBtn').style.display = 'none';
         }
 
         function rate(el, score) {
             const stars = el.parentElement.querySelectorAll('.star');
             stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active'));
         }
+
+        // Snow Effect
+        const canvas = document.getElementById('canvas-snow');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        class Snowflake {
+            constructor() { this.reset(); this.y = Math.random() * canvas.height; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.8 + 0.3; this.opacity = Math.random() * 0.5; }
+            update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
+            draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
     </script>
 </body>
 </html>
