@@ -9,75 +9,94 @@
     <style>
         :root {
             --w1: #d4af37; --w2: #e63946; --w3: #4fc3f7;
+            --bg: #050505;
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
         
-        /* АРЫН ФОН - ХӨДӨЛГӨӨНТЭЙ БӨГӨӨД ӨНГӨ НЬ СОЛИГДОНО */
+        /* АРЫН ФОН */
         #bgMain { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
-            transition: all 1s ease-in-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            transition: background 1s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(circle at center, #2a1e17 0%, #050505 100%);
         }
-        
-        /* Week Specific Backgrounds */
-        body.bg-w1 #bgMain { background: radial-gradient(circle at center, #3d2b1f 0%, #0a0a0a 100%); }
-        body.bg-w2 #bgMain { background: radial-gradient(circle at center, #4d1212 0%, #0a0a0a 100%); }
-        body.bg-w3 #bgMain { background: radial-gradient(circle at center, #1a3a4d 0%, #0a0a0a 100%); }
 
         /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .week-opt { width: 80%; max-width: 320px; padding: 20px; margin: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
+        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
         .opt-1 { color: var(--w1); border-color: var(--w1); }
         .opt-2 { color: var(--w2); border-color: var(--w2); }
         .opt-3 { color: var(--w3); border-color: var(--w3); }
 
         /* HEADER AREA */
-        .header { width: 100%; text-align: center; padding-top: 35px; z-index: 100; }
+        .header { width: 100%; text-align: center; padding-top: 30px; }
         .week-label { font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 8px; font-weight: 900; }
-        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin: 5px 0; opacity: 0.7; }
-        .m-name { font-size: 0.95rem; font-weight: 600; padding: 0 30px; line-height: 1.4; color: #fff; margin-top: 15px; text-shadow: 0 2px 10px #000; }
+        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin-top: 5px; opacity: 0.7; }
+        
+        /* ХООЛНЫ НЭР - ДООШЛУУЛСАН */
+        .m-name { 
+            font-size: 1rem; font-weight: 600; padding: 0 40px; line-height: 1.4; 
+            color: #fff; text-align: center; max-width: 90%; 
+            margin: 25px auto 0 auto; /* Зай авсан */
+            text-shadow: 0 2px 15px rgba(0,0,0,1);
+        }
 
-        /* SWIPER & SLIDES */
+        /* SWIPER */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; justify-content: flex-start; }
 
-        /* FOOD VISUALS (MIDDLE) */
-        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
-        .food-img { width: 85vw; max-width: 380px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
+        /* FOOD VISUALS */
+        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -20px; }
+        .food-img { 
+            width: 92vw; max-width: 440px; height: auto; 
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.9)); 
+            animation: float 6s infinite ease-in-out; z-index: 5;
+        }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION BAR */
-        .nutri-bar { display: flex; gap: 8px; width: 100%; max-width: 400px; justify-content: center; margin-top: -20px; z-index: 20; }
-        .n-card { flex: 1; background: rgba(0, 0, 0, 0.85); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
+        /* CALORIE & NUTRITION - ЗУРАГТАЙ ДАВХЦАХ */
+        .info-panel { 
+            width: 94%; max-width: 420px; z-index: 20; 
+            display: flex; flex-direction: column; align-items: center; 
+            margin-top: -45px; /* ЗУРАГ ДЭЭР ДАВХЦУУЛАХ */
+        }
+        .cal-badge { 
+            font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 5px 20px; 
+            background: rgba(0,0,0,0.8); border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); 
+            margin-bottom: 12px; backdrop-filter: blur(5px); z-index: 30;
+        }
+        .nutri-bar { display: flex; gap: 6px; width: 100%; justify-content: center; }
+        .n-card { flex: 1; background: rgba(15, 12, 10, 0.9); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
         .n-v { font-size: 0.85rem; font-weight: 800; color: #fff; display: block; }
         .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
 
-        /* BOTTOM UI */
-        .bottom-ui { width: 92%; max-width: 440px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); border-radius: 25px; padding: 18px; box-sizing: border-box; text-align: center; margin-bottom: 40px; z-index: 100; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; display: block; }
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
-        .stars { display: flex; gap: 5px; }
+        /* RATING & COMMENT */
+        .bottom-ui { 
+            width: 94%; max-width: 450px; background: rgba(255,255,255,0.06); 
+            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); 
+            border-radius: 25px; padding: 18px; box-sizing: border-box; 
+            text-align: center; margin-bottom: 45px; z-index: 100; 
+        }
+        .stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
         .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; }
-        .comment { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
 
-        /* INTRO SLIDE DESIGN */
-        .week-intro { text-align: center; }
+        /* INTRO SLIDE */
+        .week-intro { text-align: center; margin-top: auto; margin-bottom: auto; }
         .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-top: 10px; }
+        .intro-text { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-top: 5px; }
 
-        /* THEME COLORS PER WEEK */
-        body.bg-w1 .week-label, body.bg-w1 .n-l, body.bg-w1 .cal-badge, body.bg-w1 .intro-num { color: var(--w1); }
-        body.bg-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
-        
-        body.bg-w2 .week-label, body.bg-w2 .n-l, body.bg-w2 .cal-badge, body.bg-w2 .intro-num { color: var(--w2); }
-        body.bg-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
-
-        body.bg-w3 .week-label, body.bg-w3 .n-l, body.bg-w3 .cal-badge, body.bg-w3 .intro-num { color: var(--w3); }
-        body.bg-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
+        /* THEME COLOR APPLICATIONS */
+        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1); }
+        .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
+        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2); }
+        .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
+        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3); }
+        .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
         .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.25; }
     </style>
 </head>
 <body>
@@ -88,12 +107,12 @@
     <!-- Splash Screen -->
     <div id="splash">
         <img src="logo.png" class="logo-anim" style="width:110px;">
-        <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.75rem; opacity:0.6; font-family:'Montserrat'; letter-spacing:2px;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
+        <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.7rem; opacity:0.6;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
     <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">ЦЭС СОНГОХ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">СОНГОЛТ</h2>
         <div class="week-opt opt-1" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-2" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-3" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -116,13 +135,13 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "2-р долоо хоногийн хоол", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Даваа", name: "2-р долоо хоногийн амттай хоол", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
             { week: 2, day: "Мягмар", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
             { week: 2, day: "Лхагва", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
             { week: 2, day: "Пүрэв", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
             { week: 2, day: "Баасан", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "3-р долоо хоногийн хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Даваа", name: "3-р долоо хоногийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
             { week: 3, day: "Мягмар", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
             { week: 3, day: "Лхагва", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
             { week: 3, day: "Пүрэв", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
@@ -141,9 +160,10 @@
             
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach(m => {
+                const theme = 'slide-w' + m.week;
                 if(m.type === 'intro') {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide intro-slide" data-week="${m.week}">
+                    <div class="swiper-slide ${theme} intro-slide" data-week="${m.week}">
                         <div class="week-intro">
                             <h1 class="intro-num">WEEK ${m.week}</h1>
                             <p class="intro-text">${m.week}-р долоо хоногийн хоолны цэс</p>
@@ -151,26 +171,26 @@
                     </div>`;
                 } else {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide" data-week="${m.week}">
+                    <div class="swiper-slide ${theme}" data-week="${m.week}">
                         <div class="header">
                             <div class="week-label">WEEK ${m.week}</div>
                             <div class="day-label">${m.day}</div>
-                            <div class="m-name">${m.name}</div>
                         </div>
+                        <div class="m-name">${m.name}</div>
                         <div class="food-wrap">
                             <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
                         </div>
-                        <div class="nutri-bar">
-                            <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
-                            <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
-                            <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
-                            <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                        <div class="info-panel">
+                            <span class="cal-badge">${m.cal} KCAL</span>
+                            <div class="nutri-bar">
+                                <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
+                                <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
+                                <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
+                                <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                            </div>
                         </div>
                         <div class="bottom-ui">
-                            <span class="cal-badge">${m.cal} KCAL</span>
-                            <div class="rating-container">
-                                <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
-                            </div>
+                            <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
                     </div>`;
@@ -183,7 +203,7 @@
                     slideChange: function () {
                         const currentSlide = this.slides[this.activeIndex];
                         const week = currentSlide.getAttribute('data-week');
-                        document.body.className = 'bg-w' + week;
+                        updateBackground(week);
                         
                         if (currentSlide.classList.contains('intro-slide')) {
                             setTimeout(() => {
@@ -197,6 +217,13 @@
             });
         };
 
+        function updateBackground(week) {
+            const bg = document.getElementById('bgMain');
+            if (week == 1) bg.style.background = "radial-gradient(circle at center, #3a2a1b 0%, #050505 100%)";
+            else if (week == 2) bg.style.background = "radial-gradient(circle at center, #451515 0%, #050505 100%)";
+            else if (week == 3) bg.style.background = "radial-gradient(circle at center, #152535 0%, #050505 100%)";
+        }
+
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
             document.querySelector('.swiper').style.display = 'block';
@@ -204,7 +231,7 @@
             document.getElementById('bgMusic').play().catch(() => {});
             mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
-            document.body.className = 'bg-w' + allMeals[index].week;
+            updateBackground(allMeals[index].week);
         }
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
@@ -222,7 +249,7 @@
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 70; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
