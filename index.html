@@ -4,224 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lunch App - Төгсдэлгэрэх</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <!-- Фонтууд -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --neon-gold: #f1c40f;
-            --neon-silver: #ecf0f1;
+            --gold: #c5a059;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --text-dark: #3d2b1f;
         }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             font-family: 'Montserrat', sans-serif; 
-            background: #0a0e14; /* Гүн шөнийн хөх-хар фон */
-            color: white; overflow: hidden;
+            background: #fdfaf5; /* Гэгээлэг крем фон */
+            color: var(--text-dark); overflow: hidden;
         }
 
-        /* Animated Background Gradient */
-        .bg-gradient {
+        /* Арын хөдөлгөөнтэй зөөлөн фон */
+        .bg-circles {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, #0f172a, #1e293b, #0f172a);
+            background: radial-gradient(circle at 10% 20%, rgba(197, 160, 89, 0.05) 0%, rgba(255, 255, 255, 0) 50%),
+                        radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
             z-index: -1;
         }
 
-        /* 1. WEEK SELECTOR (Initial Screen) */
+        /* 1. ДОЛОО ХОНОГ СОНГОХ ЦЭС */
         #weekSelector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1000; background: rgba(10, 14, 20, 0.95);
+            z-index: 1000; background: #fdfaf5;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(20px); transition: 0.8s ease;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .selector-card {
+            background: white; padding: 40px 20px; border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; width: 85%; max-width: 400px;
         }
 
         .week-btn {
-            width: 80%; max-width: 300px; padding: 20px; margin: 10px;
-            background: var(--glass); border: 1px solid var(--glass-border);
-            color: white; font-family: 'Cinzel'; font-size: 1.2rem;
-            cursor: pointer; transition: 0.3s; border-radius: 15px;
+            width: 100%; padding: 18px; margin: 10px 0;
+            background: white; border: 1px solid #eee;
+            border-radius: 15px; font-family: 'Cinzel'; color: var(--text-dark);
+            font-size: 1rem; cursor: pointer; transition: 0.3s;
         }
-        .week-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+        .week-btn:hover { background: #fdfaf5; border-color: var(--gold); color: var(--gold); }
 
-        /* 2. HEADER AREA */
+        /* 2. HEADER - ДЭЭД ХЭСЭГ */
         .app-header {
-            position: absolute; top: 30px; width: 100%; z-index: 100;
-            text-align: center; pointer-events: none;
+            position: absolute; top: 5%; width: 100%; z-index: 100; text-align: center;
         }
-        .week-indicator { font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 4px; color: var(--neon-gold); opacity: 0.8; }
-        .day-title { font-size: 2rem; font-weight: 100; text-transform: uppercase; margin-top: 5px; }
+        .week-num { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 5px; }
+        .day-name { font-size: 2.2rem; font-weight: 300; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
 
-        /* 3. MAIN SWIPER */
+        /* 3. SWIPER - APP ХӨДӨЛГӨӨН */
         .swiper { width: 100%; height: 100%; }
-        .swiper-slide { 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            padding: 20px; box-sizing: border-box; 
-        }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 50px; }
 
-        /* 4. FOOD IMAGE & NUTRITION CHIPS */
-        .food-container {
-            position: relative; width: 85vw; height: 85vw; max-width: 400px; max-height: 400px;
+        /* 4. FOOD IMAGE & FLOATING INFO */
+        .food-zone {
+            position: relative; width: 80vw; height: 35vh;
             display: flex; justify-content: center; align-items: center;
+            margin-bottom: 20px;
         }
         .food-img {
             width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
-            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.1));
+            animation: floatPlate 5s ease-in-out infinite alternate;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes floatPlate { from { transform: translateY(0); } to { transform: translateY(-15px); } }
 
-        /* Nutrition Chips (Floating) */
+        /* Glowing Nutrition Chips */
         .nutri-chip {
-            position: absolute; padding: 6px 12px; background: rgba(0,0,0,0.4);
+            position: absolute; padding: 8px 14px; background: rgba(255,255,255,0.7);
             border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
-            border-radius: 50px; font-size: 0.7rem; font-weight: 600;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease forwards; opacity: 0;
+            border-radius: 50px; font-size: 0.65rem; font-weight: 600;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.1);
+            color: var(--text-dark); z-index: 10;
         }
-        .nutri-chip span { color: var(--neon-gold); margin-right: 4px; }
+        .nutri-chip span { color: var(--gold); display: block; font-size: 0.55rem; opacity: 0.7; }
         
-        /* Positioning chips around the plate */
-        .chip-1 { top: 0; left: 10%; animation-delay: 0.8s; }
-        .chip-2 { top: 20%; right: -5%; animation-delay: 1s; }
-        .chip-3 { bottom: 20%; left: -5%; animation-delay: 1.2s; }
-        .chip-4 { bottom: 0; right: 10%; animation-delay: 1.4s; }
+        /* Бичвэр давхцахаас сэргийлж байрлалыг оновчтой болгосон */
+        .c1 { top: -10%; left: 5%; }
+        .c2 { top: 10%; right: -5%; }
+        .c3 { bottom: 0%; left: -5%; }
+        .c4 { bottom: -10%; right: 5%; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-
-        /* 5. MEAL INFO & RATING (Bottom Card) */
-        .bottom-card {
-            position: absolute; bottom: 30px; width: 90%; max-width: 450px;
-            background: var(--glass); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(25px); border-radius: 30px;
-            padding: 20px; box-sizing: border-box; text-align: center;
+        /* 5. BOTTOM INFO CARD */
+        .bottom-glass {
+            width: 90%; max-width: 450px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 25px; box-sizing: border-box;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 5vh;
         }
 
-        .meal-name { font-size: 1rem; font-weight: 400; margin-bottom: 15px; opacity: 0.9; }
+        .calorie-tag {
+            color: var(--gold); font-size: 0.7rem; font-weight: bold;
+            border: 1px solid var(--gold); padding: 4px 12px; border-radius: 50px;
+            display: inline-block; margin-bottom: 12px;
+        }
+        .meal-desc { font-size: 1rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4; color: #4a3728; }
 
-        .stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .star { font-size: 1.8rem; color: rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; }
-        .star.active { color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
+        /* Үнэлгээ */
+        .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .star { font-size: 2rem; color: #ddd; cursor: pointer; transition: 0.3s; }
+        .star.active { color: #f1c40f; filter: drop-shadow(0 0 5px rgba(241,196,15,0.4)); }
 
-        .comment-box {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 12px; color: white; padding: 10px; font-family: 'Montserrat';
-            font-size: 0.8rem; resize: none; outline: none; margin-top: 10px;
+        .comment-area {
+            width: 100%; background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 10px; font-family: 'Montserrat';
+            font-size: 0.8rem; height: 60px; resize: none; outline: none;
         }
 
-        /* 6. CALORIE BADGE */
-        .calorie-neon {
-            background: rgba(241, 196, 15, 0.1); border: 1px solid var(--neon-gold);
-            color: var(--neon-gold); padding: 5px 15px; border-radius: 50px;
-            font-size: 0.75rem; font-weight: bold; display: inline-block; margin-bottom: 10px;
-            box-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
-        }
-
-        /* Back to menu button */
-        .menu-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 1001;
-            background: var(--glass); border: none; color: white; padding: 10px;
-            border-radius: 50%; cursor: pointer;
+        /* Menu Button */
+        .home-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: var(--glass-bg); border: none; color: var(--gold);
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-gradient"></div>
+    <div class="bg-circles"></div>
 
-    <!-- Week Selection Screen -->
+    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; margin-bottom: 30px;">Сонголт хийнэ үү</h2>
-        <button class="week-btn" onclick="loadWeek(1)">1-Р ДОЛОО ХОНОГ</button>
-        <button class="week-btn" onclick="loadWeek(2)">2-Р ДОЛОО ХОНОГ</button>
-        <button class="week-btn" onclick="loadWeek(3)">3-Р ДОЛОО ХОНОГ</button>
+        <div class="selector-card">
+            <h2 style="font-family:'Cinzel'; color: var(--text-dark); margin-bottom: 25px;">Үдийн Хоол</h2>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 30px;">Долоо хоногоо сонгоно уу</p>
+            <button class="week-btn" onclick="loadWeek(1)">1-Р ДОЛОО ХОНОГ</button>
+            <button class="week-btn" onclick="loadWeek(2)">2-Р ДОЛОО ХОНОГ</button>
+            <button class="week-btn" onclick="loadWeek(3)">3-Р ДОЛОО ХОНОГ</button>
+        </div>
     </div>
 
-    <button class="menu-btn" onclick="showMenu()">☰</button>
+    <button class="home-btn" onclick="showMenu()">←</button>
     <audio id="bgMusic" src="bg-music.mp3" loop></audio>
 
     <div class="swiper">
         <div class="swiper-wrapper" id="swiperWrapper">
-            <!-- Slides will be injected here by JS -->
+            <!-- Slides dynamically injected here -->
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Бүх 15 хоолны мэдээлэл (3 долоо хоног)
+        // 15 хоолны мэдээлэл
         const mealData = {
             1: [
-                { day: "Даваа", name: "Ногооны зутан шөл, гоймонтой хуурга", cal: "640", protein: "32г", fat: "24г", carb: "75г", fiber: "10г", img: "mon1.png" },
-                { day: "Мягмар", name: "Гоймонтой шөл, нарийн мах", cal: "777", protein: "38г", fat: "32г", carb: "87г", fiber: "14г", img: "tue1.png" },
-                { day: "Лхагва", name: "Помидортой шөл, шарсан бугалаг", cal: "619", protein: "34г", fat: "19г", carb: "82г", fiber: "6г", img: "wed1.png" },
-                { day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", protein: "31г", fat: "17г", carb: "100г", fiber: "7г", img: "thu1.png" },
-                { day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", protein: "33г", fat: "23г", carb: "119г", fiber: "9г", img: "fri1.png" }
+                { day: "Даваа", name: "Ногооны зутан шөл, гоймонтой хуурга", cal: "640", p: "32г", f: "24г", c: "75г", fi: "10г", img: "mon1.png" },
+                { day: "Мягмар", name: "Гоймонтой шөл, нарийн мах", cal: "777", p: "38г", f: "32г", c: "87г", fi: "14г", img: "tue1.png" },
+                { day: "Лхагва", name: "Помидортой шөл, шарсан бугалаг", cal: "619", p: "34г", f: "19г", c: "82г", fi: "6г", img: "wed1.png" },
+                { day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
+                { day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" }
             ],
             2: [
-                // 2-р долоо хоногийн мэдээллүүдийг энд нэмнэ
-                { day: "Даваа", name: "Цагаан будаа, Тахианы мах", cal: "550", protein: "30г", fat: "15г", carb: "60г", fiber: "5г", img: "mon2.png" },
-                // ...
+                // 2-р долоо хоног (Мэдээллээ энд нэмээрэй)
+                { day: "Даваа", name: "Өдрийн хоол 2-1", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "mon2.png" },
+                { day: "Мягмар", name: "Өдрийн хоол 2-2", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "tue2.png" },
+                { day: "Лхагва", name: "Өдрийн хоол 2-3", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "wed2.png" },
+                { day: "Пүрэв", name: "Өдрийн хоол 2-4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "thu2.png" },
+                { day: "Баасан", name: "Өдрийн хоол 2-5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "8г", img: "fri2.png" }
             ],
             3: [
-                // 3-р долоо хоногийн мэдээллүүдийг энд нэмнэ
-                { day: "Даваа", name: "Өдрийн онцлох хоол", cal: "600", protein: "25г", fat: "20г", carb: "70г", fiber: "8г", img: "mon3.png" },
-                // ...
+                // 3-р долоо хоног (Мэдээллээ энд нэмээрэй)
+                { day: "Даваа", name: "Өдрийн хоол 3-1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+                { day: "Мягмар", name: "Өдрийн хоол 3-2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+                { day: "Лхагва", name: "Өдрийн хоол 3-3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+                { day: "Пүрэв", name: "Өдрийн хоол 3-4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+                { day: "Баасан", name: "Өдрийн хоол 3-5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
             ]
         };
 
-        let swiper;
+        let mySwiper;
 
-        function loadWeek(weekNum) {
+        function loadWeek(num) {
             const wrapper = document.getElementById('swiperWrapper');
-            wrapper.innerHTML = ''; // Өмнөх слайдыг устгах
+            wrapper.innerHTML = '';
             
-            const currentWeek = mealData[weekNum];
-            
-            currentWeek.forEach((meal, index) => {
-                const slide = `
+            mealData[num].forEach((m, idx) => {
+                wrapper.innerHTML += `
                 <div class="swiper-slide">
                     <div class="app-header">
-                        <div class="week-indicator">WEEK ${weekNum}</div>
-                        <div class="day-title">${meal.day}</div>
+                        <div class="week-num">WEEK ${num}</div>
+                        <h2 class="day-name">${m.day}</h2>
                     </div>
 
-                    <div class="food-container">
-                        <img src="${meal.img}" class="food-img">
-                        <div class="nutri-chip chip-1"><span>Уураг</span> ${meal.protein}</div>
-                        <div class="nutri-chip chip-2"><span>Өөх</span> ${meal.fat}</div>
-                        <div class="nutri-chip chip-3"><span>Нүүрс ус</span> ${meal.carb}</div>
-                        <div class="nutri-chip chip-4"><span>Эслэг</span> ${meal.fiber}</div>
+                    <div class="food-zone">
+                        <img src="${m.img}" class="food-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
+                        <div class="nutri-chip c1"><span>Уураг</span>${m.p}</div>
+                        <div class="nutri-chip c2"><span>Өөх тос</span>${m.f}</div>
+                        <div class="nutri-chip c3"><span>Нүүрс ус</span>${m.c}</div>
+                        <div class="nutri-chip c4"><span>Эслэг</span>${m.fi}</div>
                     </div>
 
-                    <div class="bottom-card">
-                        <div class="calorie-neon">${meal.cal} ккал</div>
-                        <div class="meal-name">${meal.name}</div>
-                        
-                        <div class="stars" data-id="${weekNum}-${index}">
+                    <div class="bottom-glass">
+                        <div class="calorie-tag">${m.cal} ккал</div>
+                        <div class="meal-desc">${m.name}</div>
+                        <div class="stars" data-id="${num}-${idx}">
                             <span class="star" onclick="rate(this, 1)">★</span>
                             <span class="star" onclick="rate(this, 2)">★</span>
                             <span class="star" onclick="rate(this, 3)">★</span>
                             <span class="star" onclick="rate(this, 4)">★</span>
                             <span class="star" onclick="rate(this, 5)">★</span>
                         </div>
-                        <textarea class="comment-box" placeholder="Сэтгэгдэл бичих... (заавал биш)"></textarea>
+                        <textarea class="comment-area" placeholder="Сэтгэгдэл бичих..."></textarea>
                     </div>
                 </div>`;
-                wrapper.innerHTML += slide;
             });
 
             document.getElementById('weekSelector').style.transform = 'translateY(-100%)';
-            document.getElementById('bgMusic').play();
+            document.getElementById('bgMusic').play().catch(() => {});
 
-            // Swiper Initialize with Modern Creative Effect
-            if (swiper) swiper.destroy();
-            swiper = new Swiper('.swiper', {
-                effect: 'creative',
-                creativeEffect: {
-                    prev: { shadow: true, translate: ['-20%', 0, -1] },
-                    next: { translate: ['100%', 0, 0] },
-                },
-                speed: 600,
+            if (mySwiper) mySwiper.destroy();
+            mySwiper = new Swiper('.swiper', {
+                speed: 800,
+                effect: 'slide', // Илүү найдвартай App-like гулсалт
+                parallax: true,
                 grabCursor: true
             });
         }
@@ -233,7 +236,6 @@
         function rate(el, score) {
             const stars = el.parentElement.querySelectorAll('.star');
             stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active'));
-            // Google Sheets рүү илгээх кодыг энд нэмнэ
         }
     </script>
 </body>
