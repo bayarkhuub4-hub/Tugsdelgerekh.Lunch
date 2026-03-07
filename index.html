@@ -8,98 +8,75 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --w1: #d4af37; /* Алтлаг */
-            --w2: #00e5ff; /* Кристал Мөнгөлөг */
-            --w3: #ff6b6b; /* Хүрлэг/Ягаан */
-            --bg: #05080c;
-            --glass: rgba(255, 255, 255, 0.05);
+            --w1: #d4af37; --w2: #00e5ff; --w3: #ff6b6b;
+            --bg: #05080c; --glass: rgba(255, 255, 255, 0.05);
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: var(--bg); color: white; overflow: hidden; }
+        #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #080c14; }
 
-        /* SPLASH SCREEN */
+        /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        .logo-anim { width: 120px; filter: drop-shadow(0 0 15px var(--w1)); margin-bottom: 20px; }
-        .school-name { font-family: 'Cinzel'; font-size: 1rem; letter-spacing: 2px; text-align: center; }
-
-        /* WEEK SELECTOR */
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .selector-title { font-family: 'Cinzel'; letter-spacing: 5px; margin-bottom: 40px; color: white; }
         .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: var(--glass); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
-        
-        /* Selector Colors */
         .opt-1 { color: var(--w1); border-color: rgba(212, 175, 55, 0.2); }
-        .opt-1:hover { border-color: var(--w1); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
         .opt-2 { color: var(--w2); border-color: rgba(0, 229, 255, 0.2); }
-        .opt-2:hover { border-color: var(--w2); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
         .opt-3 { color: var(--w3); border-color: rgba(255, 107, 107, 0.2); }
-        .opt-3:hover { border-color: var(--w3); box-shadow: 0 0 20px rgba(255, 107, 107, 0.3); }
 
-        /* TRANSITION SLIDE */
-        .week-intro { text-align: center; }
-        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 5px; text-transform: uppercase; opacity: 0.7; margin-top: 10px; }
+        /* HEADER AREA */
+        .header { width: 100%; text-align: center; padding-top: 30px; z-index: 100; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 6px; font-weight: 900; }
+        .day-label { font-size: 1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 3px; margin: 5px 0; opacity: 0.8; }
+        .m-name { font-size: 0.95rem; font-weight: 500; padding: 0 30px; line-height: 1.3; margin-top: 5px; color: #fff; }
 
-        /* APP HEADER */
-        .header { position: absolute; top: 40px; width: 100%; z-index: 100; text-align: center; pointer-events: none; }
-        .week-label { font-family: 'Cinzel'; font-size: 2rem; letter-spacing: 12px; font-weight: 900; margin-bottom: 5px; }
-        .day-label { font-size: 1.2rem; font-weight: 200; text-transform: uppercase; letter-spacing: 5px; color: white; opacity: 0.9; }
-
-        /* SWIPER */
+        /* SWIPER & SLIDES */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; }
 
-        /* FOOD AREA */
-        .food-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 10; margin-top: -20px; }
-        .food-img { width: 85vw; max-width: 380px; height: auto; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; position: relative; z-index: 15; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        /* FOOD VISUALS (MIDDLE) */
+        .food-wrap { position: relative; width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .food-img { width: 75vw; max-width: 320px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-        /* NUTRITION BAR */
-        .nutri-bar { display: flex; gap: 8px; margin-top: 15px; width: 100%; max-width: 380px; justify-content: center; z-index: 20; position: relative; }
-        .n-card { flex: 1; background: rgba(0, 0, 0, 0.85); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
-        .n-v { font-size: 0.9rem; font-weight: 800; color: #fff; display: block; }
-        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 4px; }
+        /* NUTRITION & CALORIE OVERLAY */
+        .info-overlay { position: absolute; width: 90%; max-width: 380px; z-index: 20; display: flex; flex-direction: column; align-items: center; bottom: 10%; }
+        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 5px 15px; background: rgba(0,0,0,0.6); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
+        .nutri-bar { display: flex; gap: 6px; width: 100%; justify-content: center; }
+        .n-card { flex: 1; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255,255,255,0.1); padding: 8px 2px; border-radius: 10px; text-align: center; backdrop-filter: blur(5px); }
+        .n-v { font-size: 0.8rem; font-weight: 800; color: #fff; display: block; }
+        .n-l { font-size: 0.5rem; text-transform: uppercase; font-weight: 600; display: block; margin-top: 2px; }
 
-        /* BOTTOM UI */
-        .bottom-ui { position: absolute; bottom: 35px; width: 92%; max-width: 440px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); border-radius: 30px; padding: 20px; box-sizing: border-box; text-align: center; z-index: 100; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; display: block; }
-        .m-name { font-size: 0.95rem; font-weight: 400; line-height: 1.5; margin-bottom: 15px; color: #eee; }
-        
-        /* RATING SECTION */
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .rating-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }
-        .stars { display: flex; gap: 5px; }
-        .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s; }
-        
-        /* Theme Colors per Week */
-        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1); }
+        /* BOTTOM UI (RATING ONLY) */
+        .bottom-ui { width: 92%; max-width: 440px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(30px); border-radius: 25px; padding: 15px; box-sizing: border-box; text-align: center; margin-bottom: 25px; z-index: 100; }
+        .rating-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .rating-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }
+        .stars { display: flex; gap: 4px; }
+        .star { font-size: 1.6rem; color: rgba(255,255,255,0.1); cursor: pointer; }
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; color: white; font-family: 'Montserrat'; font-size: 0.75rem; resize: none; outline: none; box-sizing: border-box; height: 45px; }
+
+        /* THEME COLORS */
+        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge { color: var(--w1); }
         .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
-        
-        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2); }
+        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge { color: var(--w2); }
         .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
-
-        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3); }
+        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge { color: var(--w3); }
         .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
-        .comment { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
-
-        .menu-btn { position: fixed; top: 25px; left: 20px; z-index: 2500; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.3; }
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.2; }
     </style>
 </head>
 <body>
-
+    <div id="bgMain"></div>
     <canvas id="canvas-snow"></canvas>
 
-    <!-- Splash -->
     <div id="splash">
-        <img src="logo.png" class="logo-anim">
-        <div class="school-name">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br> <span style="font-size: 0.7rem; opacity: 0.5;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
+        <img src="logo.png" class="logo-anim" style="width:100px;">
+        <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.7rem; opacity:0.5;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
-    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 class="selector-title">ЦЭС СОНГОХ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">ЦЭС СОНГОХ</h2>
         <div class="week-opt opt-1" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-2" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-3" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -122,21 +99,29 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "2-р долоо хоногийн Даваа", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
-            { week: 2, day: "Мягмар", name: "2-р долоо хоногийн Мягмар", cal: "610", p: "31г", f: "21г", c: "81г", fi: "6г", img: "tue2.png" },
-            { week: 2, day: "Лхагва", name: "2-р долоо хоногийн Лхагва", cal: "620", p: "32г", f: "22г", c: "82г", fi: "7г", img: "wed2.png" },
-            { week: 2, day: "Пүрэв", name: "2-р долоо хоногийн Пүрэв", cal: "630", p: "33г", f: "23г", c: "83г", fi: "8г", img: "thu2.png" },
-            { week: 2, day: "Баасан", name: "2-р долоо хоногийн Баасан", cal: "640", p: "34г", f: "24г", c: "84г", fi: "9г", img: "fri2.png" },
+            { week: 2, day: "Даваа", name: "2-р долоо хоног", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Мягмар", name: "Хоолны нэр", cal: "610", p: "31г", f: "21г", c: "81г", fi: "6г", img: "tue2.png" },
+            { week: 2, day: "Лхагва", name: "Хоолны нэр", cal: "620", p: "32г", f: "22г", c: "82г", fi: "7г", img: "wed2.png" },
+            { week: 2, day: "Пүрэв", name: "Хоолны нэр", cal: "630", p: "33г", f: "23г", c: "83г", fi: "8г", img: "thu2.png" },
+            { week: 2, day: "Баасан", name: "Хоолны нэр", cal: "640", p: "34г", f: "24г", c: "84г", fi: "9г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "3-р долоо хоногийн Даваа", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "3-р долоо хоногийн Мягмар", cal: "660", p: "36г", f: "26г", c: "86г", fi: "11г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "3-р долоо хоногийн Лхагва", cal: "670", p: "37г", f: "27г", c: "87г", fi: "12г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "3-р долоо хоногийн Пүрэв", cal: "680", p: "38г", f: "28г", c: "88г", fi: "13г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "3-р долоо хоногийн Баасан", cal: "690", p: "39г", f: "29г", c: "89г", fi: "14г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "3-р долоо хоног", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "Хоолны нэр", cal: "660", p: "36г", f: "26г", c: "86г", fi: "11г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "Хоолны нэр", cal: "670", p: "37г", f: "27г", c: "87г", fi: "12г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "Хоолны нэр", cal: "680", p: "38г", f: "28г", c: "88г", fi: "13г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "Хоолны нэр", cal: "690", p: "39г", f: "29г", c: "89г", fi: "14г", img: "fri3.png" }
         ];
 
-        let mainSwiper;
+        // Зургуудыг урьдчилан ачаалах (Preload)
+        function preloadImages() {
+            allMeals.filter(m => m.img).forEach(m => {
+                const img = new Image();
+                img.src = m.img;
+            });
+        }
+        preloadImages();
 
+        let mainSwiper;
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('splash').style.opacity = '0';
@@ -148,52 +133,38 @@
             
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach(m => {
-                const themeClass = 'slide-w' + m.week;
+                const theme = 'slide-w' + m.week;
                 if(m.type === 'intro') {
-                    wrapper.innerHTML += `
-                    <div class="swiper-slide ${themeClass}">
-                        <div class="week-intro">
-                            <h1 class="intro-num">WEEK ${m.week}</h1>
-                            <div class="intro-text">Эхэлж байна</div>
-                        </div>
-                    </div>`;
+                    wrapper.innerHTML += `<div class="swiper-slide ${theme}"><div style="text-align:center;"><h1 style="font-family:'Cinzel';font-size:3rem;margin:0;">WEEK ${m.week}</h1><p style="letter-spacing:5px;opacity:0.6;">ЭХЭЛЖ БАЙНА</p></div></div>`;
                 } else {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide ${themeClass}">
+                    <div class="swiper-slide ${theme}">
                         <div class="header">
                             <div class="week-label">WEEK ${m.week}</div>
                             <div class="day-label">${m.day}</div>
+                            <div class="m-name">${m.name}</div>
                         </div>
                         <div class="food-wrap">
-                            <img src="${m.img}" class="food-img" onerror="this.style.opacity='0.2'">
-                            <div class="nutri-bar">
-                                <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
-                                <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
-                                <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
-                                <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                            <img src="${m.img}" class="food-img" loading="eager">
+                            <div class="info-overlay">
+                                <span class="cal-badge">${m.cal} KCAL</span>
+                                <div class="nutri-bar">
+                                    <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
+                                    <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
+                                    <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
+                                    <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                                </div>
                             </div>
                         </div>
                         <div class="bottom-ui">
-                            <span class="cal-badge">${m.cal} KCAL</span>
-                            <div class="m-name">${m.name}</div>
-                            <div class="rating-container">
-                                <div class="rating-label">ҮНЭЛГЭЭ:</div>
-                                <div class="stars">
-                                    <span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span>
-                                </div>
-                            </div>
-                            <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
+                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЭ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+                            <textarea class="comment" placeholder="Сэтгэгдэл..."></textarea>
                         </div>
                     </div>`;
                 }
             });
 
-            mainSwiper = new Swiper('.swiper', {
-                direction: 'vertical',
-                speed: 800,
-                mousewheel: true,
-                effect: 'slide'
-            });
+            mainSwiper = new Swiper('.swiper', { direction: 'vertical', speed: 600, mousewheel: true });
         };
 
         function jumpTo(index) {
@@ -201,22 +172,13 @@
             document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            mainSwiper.update();
-            mainSwiper.slideTo(index, 0);
+            mainSwiper.update(); mainSwiper.slideTo(index, 0);
         }
 
-        function showMenu() {
-            document.getElementById('weekSelector').style.display = 'flex';
-            document.querySelector('.swiper').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
-        }
+        function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
+        function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        function rate(el, score) {
-            const stars = el.parentElement.querySelectorAll('.star');
-            stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active'));
-        }
-
-        // Snow Animation
+        // Snow
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -224,11 +186,11 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.4 + 0.2; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.5 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
