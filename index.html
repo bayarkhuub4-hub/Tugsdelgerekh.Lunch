@@ -3,91 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Үүрийн Шүүдэр - Lunch App</title>
+    <title>Төгсдэлгэрэх - Үдийн Хоол</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Montserrat:wght@100;300;500;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
             --accent: #d4af37;
-            --glass: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.2);
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
 
         /* background layers for each week */
-        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: 1s ease; }
-        .bg-week-1 { background: radial-gradient(circle, #1a2332, #080c14); }
-        .bg-week-2 { background: radial-gradient(circle, #1e2e28, #0a110e); }
-        .bg-week-3 { background: radial-gradient(circle, #2e241e, #110d0a); }
+        #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: background 1.2s ease; background: #080c14; }
 
         /* SPLASH SCREEN */
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: flex; justify-content: center; align-items: center; transition: 1s ease; }
-        .logo-anim { width: 130px; animation: pulse 2s infinite; filter: drop-shadow(0 0 15px var(--accent)); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+        #splash { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; z-index: 3000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: 0.8s ease; 
+        }
+        .logo-anim { width: 120px; filter: drop-shadow(0 0 15px var(--accent)); margin-bottom: 20px; }
+        .school-name { font-family: 'Cinzel'; font-size: 0.9rem; letter-spacing: 2px; color: #fff; text-align: center; line-height: 1.6; }
 
         /* WEEK SELECTOR */
-        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1500; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        #weekSelector { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 2000; background: #000; display: none; flex-direction: column; 
+            justify-content: center; align-items: center; 
+        }
         .selector-title { font-family: 'Cinzel'; letter-spacing: 5px; margin-bottom: 30px; color: var(--accent); }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 10px; background: var(--glass); border: 1px solid var(--border); backdrop-filter: blur(10px); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .week-opt { width: 80%; max-width: 320px; padding: 20px; margin: 10px; background: var(--glass); border: 1px solid var(--border); backdrop-filter: blur(10px); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.3s; }
+        .week-opt:hover { border-color: var(--accent); background: rgba(212, 175, 55, 0.1); }
 
-        /* TRANSITION SLIDE (Week intro) */
+        /* TRANSITION SLIDE */
         .week-intro { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
-        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; color: var(--accent); margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 5px; text-transform: uppercase; opacity: 0.7; margin-top: 10px; }
+        .intro-num { font-family: 'Cinzel'; font-size: 3.5rem; font-weight: 900; color: var(--accent); margin: 0; }
+        .intro-text { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.7; margin-top: 10px; }
 
         /* APP HEADER */
-        .header { position: absolute; top: 40px; width: 100%; z-index: 100; text-align: center; pointer-events: none; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 8px; color: var(--accent); font-weight: 900; margin-bottom: 5px; }
-        .day-label { font-size: 1.6rem; font-weight: 200; text-transform: uppercase; letter-spacing: 3px; }
+        .header { position: absolute; top: 35px; width: 100%; z-index: 100; text-align: center; pointer-events: none; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.5rem; letter-spacing: 10px; color: var(--accent); font-weight: 900; }
+        .day-label { font-size: 1.4rem; font-weight: 200; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
 
-        /* SWIPER VERTICAL */
-        .swiper { width: 100%; height: 100vh; }
+        /* MAIN SWIPER */
+        .swiper { width: 100%; height: 100vh; display: none; } /* Сонголт хийтэл нууна */
         .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
 
-        /* FOOD VISUALS */
-        .food-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: -30px; z-index: 10; }
-        .food-img { width: 80vw; max-width: 350px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7)); animation: float 6s infinite ease-in-out; }
+        /* FOOD AREA */
+        .food-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 10; margin-bottom: 20px; }
+        .food-img { width: 80vw; max-width: 340px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7)); animation: float 6s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION BAR - FIXED VISIBILITY */
-        .nutri-bar { 
-            display: flex; gap: 8px; margin-top: 15px; width: 95%; max-width: 400px; 
-            justify-content: center; z-index: 20; position: relative;
-        }
-        .n-card { 
-            flex: 1; background: rgba(20, 25, 35, 0.85); border: 1px solid var(--border); 
-            padding: 12px 5px; border-radius: 12px; text-align: center; 
-            backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .n-card span { display: block; }
-        .n-v { font-size: 0.9rem; font-weight: 800; color: #fff; }
-        .n-l { font-size: 0.55rem; color: var(--accent); text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+        /* NUTRITION BAR */
+        .nutri-bar { display: flex; gap: 8px; margin-top: 15px; width: 100%; max-width: 380px; justify-content: center; z-index: 20; }
+        .n-card { flex: 1; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
+        .n-v { font-size: 0.85rem; font-weight: 800; color: #fff; display: block; }
+        .n-l { font-size: 0.5rem; color: var(--accent); text-transform: uppercase; font-weight: 600; display: block; margin-top: 3px; }
 
-        /* RATING CARD */
+        /* BOTTOM UI */
         .bottom-ui { position: absolute; bottom: 30px; width: 90%; max-width: 420px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); backdrop-filter: blur(30px); border-radius: 25px; padding: 20px; box-sizing: border-box; text-align: center; z-index: 100; }
-        .cal-neon { color: var(--accent); font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; display: block; }
-        .m-name { font-size: 0.9rem; font-weight: 300; line-height: 1.4; margin-bottom: 12px; opacity: 0.9; }
-        .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .cal-neon { color: var(--accent); font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 5px; display: block; }
+        .m-name { font-size: 0.9rem; font-weight: 400; line-height: 1.4; margin-bottom: 12px; }
+        .stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
         .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; }
         .star.active { color: #ffcc00; text-shadow: 0 0 10px var(--accent); }
-        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.75rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: white; font-family: 'Montserrat'; font-size: 0.75rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
 
-        .menu-btn { position: fixed; top: 25px; left: 20px; z-index: 1600; background: var(--glass); border: 1px solid var(--border); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
+        .menu-btn { position: fixed; top: 25px; left: 20px; z-index: 2500; background: var(--glass); border: 1px solid var(--border); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
         #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.4; }
     </style>
 </head>
 <body>
 
-    <div id="bgMain" class="bg-layer bg-week-1"></div>
+    <div id="bgMain"></div>
     <canvas id="canvas-snow"></canvas>
 
-    <!-- Splash -->
-    <div id="splash"><img src="logo.png" class="logo-anim"></div>
+    <!-- Splash Screen -->
+    <div id="splash">
+        <img src="logo.png" class="logo-anim">
+        <div class="school-name">
+            ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br>
+            <span style="font-size: 0.7rem; opacity: 0.6; font-family: 'Montserrat';">ҮДИЙН ХООЛНЫ ЦЭС</span>
+        </div>
+    </div>
 
-    <!-- Week Selection -->
+    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 class="selector-title">ҮДИЙН ЦЭС</h2>
+        <h2 class="selector-title">Сонголт хийнэ үү</h2>
         <div class="week-opt" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -129,13 +133,14 @@
         let mainSwiper;
 
         window.onload = () => {
+            // Splash time 1.5s
             setTimeout(() => {
                 document.getElementById('splash').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('splash').style.display = 'none';
                     document.getElementById('weekSelector').style.display = 'flex';
-                }, 1000);
-            }, 2000);
+                }, 800);
+            }, 1500);
             
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach(m => {
@@ -155,7 +160,7 @@
                             <div class="day-label">${m.day}</div>
                         </div>
                         <div class="food-wrap">
-                            <img src="${m.img}" class="food-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/706/706164.png'">
+                            <img src="${m.img}" class="food-img" onerror="this.style.opacity='0.5'">
                             <div class="nutri-bar">
                                 <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
                                 <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
@@ -179,8 +184,7 @@
                 mousewheel: true,
                 on: {
                     slideChange: function () {
-                        const currentSlide = this.slides[this.activeIndex];
-                        const week = currentSlide.getAttribute('data-week');
+                        const week = this.slides[this.activeIndex].getAttribute('data-week');
                         updateBG(week);
                     }
                 }
@@ -189,18 +193,25 @@
 
         function updateBG(week) {
             const bg = document.getElementById('bgMain');
-            bg.className = 'bg-layer bg-week-' + week;
+            // Өнгийг гараар тохируулах (Stronger logic)
+            if(week == 1) bg.style.background = "radial-gradient(circle, #1a2332, #080c14)";
+            else if(week == 2) bg.style.background = "radial-gradient(circle, #1e2e28, #0a110e)";
+            else if(week == 3) bg.style.background = "radial-gradient(circle, #2e241e, #110d0a)";
         }
 
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
+            document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
+            mainSwiper.update();
             mainSwiper.slideTo(index, 0);
+            updateBG(allMeals[index].week);
         }
 
         function showMenu() {
             document.getElementById('weekSelector').style.display = 'flex';
+            document.querySelector('.swiper').style.display = 'none';
             document.getElementById('backBtn').style.display = 'none';
         }
 
