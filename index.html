@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Үдийн хоолны амталгаа - Төгсдэлгэрэх сургууль</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        :root {
+            --primary: #3d2b1f; /* Гарчигны бор */
+            --bg-cream: #f7f3ed; /* Арын цайвар фон */
+            --yellow: #eab308; /* Илчлэгийн шар */
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: var(--bg-cream); overflow: hidden; }
+
+        /* Эхлэл дэлгэц */
+        #startScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-cream); z-index: 1000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .school-logo { width: 100px; margin-bottom: 20px; border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* Слайдер */
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { display: flex; flex-direction: column; background: var(--bg-cream); padding-top: 20px; }
+
+        /* ХООЛНЫ ХЭСЭГ (Зураг ба Item-ууд) */
+        .food-stage {
+            position: relative; width: 100%; height: 42%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Ар талын цэцэг навч */
+        .floral-bg {
+            position: absolute; width: 260px; z-index: 1; opacity: 0.4;
+            animation: rotateFloral 25s infinite linear;
+        }
+        @keyframes rotateFloral { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Хоолны тавиур - Хөвөх хөдөлгөөн */
+        .food-tray {
+            position: relative; width: 82%; z-index: 5;
+            filter: drop-shadow(0 25px 35px rgba(0,0,0,0.15));
+            animation: floatTray 4s ease-in-out infinite alternate;
+        }
+        @keyframes floatTray { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+        /* Илчлэгийн шар тэмдэглэгээ (Аяган дээр давхарлах) */
+        .calorie-badge {
+            position: absolute; right: 12%; bottom: 10%;
+            background: var(--yellow); color: white; padding: 10px 18px;
+            border-radius: 25px; font-weight: bold; font-size: 0.85rem; z-index: 10;
+            box-shadow: 0 8px 20px rgba(234, 179, 8, 0.4);
+            transform: scale(0); transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+        }
+        .swiper-slide-active .calorie-badge { transform: scale(1); }
+        .calorie-badge span { display: block; font-size: 0.6rem; opacity: 0.9; letter-spacing: 1px; }
+
+        /* Мэдээллийн карт */
+        .info-panel {
+            flex: 1; background: white; border-radius: 40px 40px 0 0;
+            padding: 30px; box-shadow: 0 -15px 40px rgba(0,0,0,0.04);
+            z-index: 20; display: flex; flex-direction: column;
+        }
+
+        .day-label { font-family: 'Cinzel', serif; font-weight: bold; color: #b5a499; font-size: 0.85rem; letter-spacing: 2px; }
+        .meal-title { font-size: 1.25rem; color: var(--primary); font-weight: 700; margin: 8px 0 25px 0; line-height: 1.4; }
+
+        /* Шим тэжээл - Grid */
+        .nutrition-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+            opacity: 0; transform: translateY(20px); transition: 0.6s ease 0.5s;
+        }
+        .swiper-slide-active .nutrition-grid { opacity: 1; transform: translateY(0); }
+
+        .nutri-item {
+            background: #fdfaf5; border: 1px solid #f0e6da;
+            padding: 12px 15px; border-radius: 18px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nutri-label { font-size: 0.75rem; color: #8c7e74; font-weight: 500; }
+        .nutri-value { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+
+        /* Үнэлгээ */
+        .rating-box {
+            margin-top: auto; background: #faf8f5; padding: 20px; border-radius: 25px; text-align: center;
+        }
+        .stars { display: flex; justify-content: center; gap: 10px; font-size: 2rem; color: #e0e0e0; margin: 10px 0; }
+        .star { cursor: pointer; transition: 0.2s; }
+        .star.active { color: #f1c40f; filter: drop-shadow(0 0 5px rgba(241,196,15,0.4)); }
+
+        .submit-btn {
+            background: var(--primary); color: white; border: none; padding: 16px 50px;
+            border-radius: 50px; font-weight: 600; cursor: pointer; font-family: 'Montserrat';
+            box-shadow: 0 10px 20px rgba(61,43,31,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Эхлэл дэлгэц -->
+    <div id="startScreen">
+        <img src="logo.png" class="school-logo">
+        <h1 style="font-family:'Cinzel'; color: var(--primary); letter-spacing: 3px;">ҮДИЙН ХООЛ</h1>
+        <p style="color: #888; font-size: 0.9rem;">Сурагчдын үдийн хоолны амталгаа</p>
+        <button class="submit-btn" style="margin-top: 30px;" onclick="initApp()">ЭХЛЭХ</button>
+    </div>
+
+    <audio id="bgMusic" src="bg-music.mp3" loop></audio>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            
+            <!-- ДАВАА ГАРАГ -->
+            <div class="swiper-slide">
+                <div class="food-stage">
+                    <img src="floral.png" class="floral-bg">
+                    <img src="mon.png" class="food-tray">
+                    <div class="calorie-badge"><span>НИЙТ ИЛЧЛЭГ:</span>640 ккал</div>
+                </div>
+                <div class="info-panel">
+                    <div class="day-label">WEEK 1 / ДАВАА ГАРАГ</div>
+                    <div class="meal-title">Ногооны зутан шөл, гоймонтой хуурга</div>
+                    <div class="nutrition-grid">
+                        <div class="nutri-item"><span class="nutri-label">Уураг</span><span class="nutri-value">32г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Өөх тос</span><span class="nutri-value">24г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Нүүрс ус</span><span class="nutri-value">75г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Эслэг</span><span class="nutri-value">10г</span></div>
+                    </div>
+                    <div class="rating-box">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: #8c7e74;">АМТНЫ ҮНЭЛГЭЭ</div>
+                        <div class="stars" data-day="monday">
+                            <span class="star" onclick="rate(this, 1)">★</span>
+                            <span class="star" onclick="rate(this, 2)">★</span>
+                            <span class="star" onclick="rate(this, 3)">★</span>
+                            <span class="star" onclick="rate(this, 4)">★</span>
+                            <span class="star" onclick="rate(this, 5)">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- МЯГМАР ГАРАГ -->
+            <div class="swiper-slide">
+                <div class="food-stage">
+                    <img src="floral.png" class="floral-bg">
+                    <img src="tue.png" class="food-tray">
+                    <div class="calorie-badge"><span>НИЙТ ИЛЧЛЭГ:</span>777 ккал</div>
+                </div>
+                <div class="info-panel">
+                    <div class="day-label">WEEK 1 / МЯГМАР ГАРАГ</div>
+                    <div class="meal-title">Гоймонтой шөл, нарийн мах</div>
+                    <div class="nutrition-grid">
+                        <div class="nutri-item"><span class="nutri-label">Уураг</span><span class="nutri-value">38г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Өөх тос</span><span class="nutri-value">32г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Нүүрс ус</span><span class="nutri-value">87г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Эслэг</span><span class="nutri-value">14г</span></div>
+                    </div>
+                    <div class="rating-box">
+                        <div class="stars" data-day="tuesday">
+                            <span class="star" onclick="rate(this, 1)">★</span><span class="star" onclick="rate(this, 2)">★</span><span class="star" onclick="rate(this, 3)">★</span><span class="star" onclick="rate(this, 4)">★</span><span class="star" onclick="rate(this, 5)">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ЛХАГВА ГАРАГ -->
+            <div class="swiper-slide">
+                <div class="food-stage">
+                    <img src="floral.png" class="floral-bg">
+                    <img src="wed.png" class="food-tray">
+                    <div class="calorie-badge"><span>НИЙТ ИЛЧЛЭГ:</span>619 ккал</div>
+                </div>
+                <div class="info-panel">
+                    <div class="day-label">WEEK 1 / ЛХАГВА ГАРАГ</div>
+                    <div class="meal-title">Помидортой шөл, шарсан бугалаг</div>
+                    <div class="nutrition-grid">
+                        <div class="nutri-item"><span class="nutri-label">Уураг</span><span class="nutri-value">34г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Өөх тос</span><span class="nutri-value">19г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Нүүрс ус</span><span class="nutri-value">82г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Эслэг</span><span class="nutri-value">6г</span></div>
+                    </div>
+                    <div class="rating-box">
+                        <div class="stars" data-day="wednesday">
+                            <span class="star" onclick="rate(this, 1)">★</span><span class="star" onclick="rate(this, 2)">★</span><span class="star" onclick="rate(this, 3)">★</span><span class="star" onclick="rate(this, 4)">★</span><span class="star" onclick="rate(this, 5)">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ПҮРЭВ ГАРАГ -->
+            <div class="swiper-slide">
+                <div class="food-stage">
+                    <img src="floral.png" class="floral-bg">
+                    <img src="thu.png" class="food-tray">
+                    <div class="calorie-badge"><span>НИЙТ ИЛЧЛЭГ:</span>664 ккал</div>
+                </div>
+                <div class="info-panel">
+                    <div class="day-label">WEEK 1 / ПҮРЭВ ГАРАГ</div>
+                    <div class="meal-title">Ногоон сонгинотой хар шөл, пирожки</div>
+                    <div class="nutrition-grid">
+                        <div class="nutri-item"><span class="nutri-label">Уураг</span><span class="nutri-value">31г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Өөх тос</span><span class="nutri-value">17г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Нүүрс ус</span><span class="nutri-value">100г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Эслэг</span><span class="nutri-value">7г</span></div>
+                    </div>
+                    <div class="rating-box">
+                        <div class="stars" data-day="thursday">
+                            <span class="star" onclick="rate(this, 1)">★</span><span class="star" onclick="rate(this, 2)">★</span><span class="star" onclick="rate(this, 3)">★</span><span class="star" onclick="rate(this, 4)">★</span><span class="star" onclick="rate(this, 5)">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- БААСАН ГАРАГ -->
+            <div class="swiper-slide">
+                <div class="food-stage">
+                    <img src="floral.png" class="floral-bg">
+                    <img src="fri.png" class="food-tray">
+                    <div class="calorie-badge"><span>НИЙТ ИЛЧЛЭГ:</span>802 ккал</div>
+                </div>
+                <div class="info-panel">
+                    <div class="day-label">WEEK 1 / БААСАН ГАРАГ</div>
+                    <div class="meal-title">Хөц будаатай шөл, мантууны хавчуурга</div>
+                    <div class="nutrition-grid">
+                        <div class="nutri-item"><span class="nutri-label">Уураг</span><span class="nutri-value">33г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Өөх тос</span><span class="nutri-value">23г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Нүүрс ус</span><span class="nutri-value">119г</span></div>
+                        <div class="nutri-item"><span class="nutri-label">Эслэг</span><span class="nutri-value">9г</span></div>
+                    </div>
+                    <div class="rating-box">
+                        <div class="stars" data-day="friday">
+                            <span class="star" onclick="rate(this, 1)">★</span><span class="star" onclick="rate(this, 2)">★</span><span class="star" onclick="rate(this, 3)">★</span><span class="star" onclick="rate(this, 4)">★</span><span class="star" onclick="rate(this, 5)">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        function initApp() {
+            document.getElementById('startScreen').style.opacity = '0';
+            setTimeout(() => document.getElementById('startScreen').style.display = 'none', 500);
+            document.getElementById('bgMusic').play();
+            
+            new Swiper('.swiper', {
+                direction: 'horizontal',
+                speed: 800,
+                grabCursor: true,
+                parallax: true
+            });
+        }
+
+        function rate(el, score) {
+            const day = el.parentElement.dataset.day;
+            const stars = el.parentElement.querySelectorAll('.star');
+            stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active'));
+            
+            // Google Sheets рүү илгээх хэсэг
+            console.log(`Submitted: ${day} - ${score} stars`);
+            // alert(day + " гарагийн үнэлгээг хүлээн авлаа. Баярлалаа!");
+        }
+    </script>
+</body>
+</html>
