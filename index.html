@@ -8,110 +8,92 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --w1: #d4af37; /* Алтлаг шар */
-            --w2: #ff4d4d; /* Улаан */
-            --w3: #4fc3f7; /* Цайвар цэнхэр */
-            --theme: var(--w1);
+            --w1: #d4af37; --w2: #e63946; --w3: #4fc3f7;
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
         
-        /* 1. АРЫН ФОН - ИЛҮҮ ТОД ТУЯАТАЙ ЗАСВАР */
+        /* АРЫН ФОН - ХӨДӨЛГӨӨНТЭЙ БӨГӨӨД ӨНГӨ НЬ СОЛИГДОНО */
         #bgMain { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
-            transition: background 1.2s ease-in-out;
-            background: #0d0d0d;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
+            transition: all 1s ease-in-out;
         }
         
-        /* Өнгөний ялгаанууд (Dynamic Backgrounds) */
-        body.bg-week-1 #bgMain { background: radial-gradient(circle at center, #3a2518 0%, #050505 100%); }
-        body.bg-week-2 #bgMain { background: radial-gradient(circle at center, #450a0a 0%, #050505 100%); }
-        body.bg-week-3 #bgMain { background: radial-gradient(circle at center, #0d2a3a 0%, #050505 100%); }
+        /* Week Specific Backgrounds */
+        body.bg-w1 #bgMain { background: radial-gradient(circle at center, #3d2b1f 0%, #0a0a0a 100%); }
+        body.bg-w2 #bgMain { background: radial-gradient(circle at center, #4d1212 0%, #0a0a0a 100%); }
+        body.bg-w3 #bgMain { background: radial-gradient(circle at center, #1a3a4d 0%, #0a0a0a 100%); }
 
         /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
+        .week-opt { width: 80%; max-width: 320px; padding: 20px; margin: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
         .opt-1 { color: var(--w1); border-color: var(--w1); }
         .opt-2 { color: var(--w2); border-color: var(--w2); }
         .opt-3 { color: var(--w3); border-color: var(--w3); }
 
-        /* INTRO SLIDE */
-        .week-intro-content { text-align: center; }
-        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-top: 5px; }
+        /* HEADER AREA */
+        .header { width: 100%; text-align: center; padding-top: 35px; z-index: 100; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 8px; font-weight: 900; }
+        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin: 5px 0; opacity: 0.7; }
+        .m-name { font-size: 0.95rem; font-weight: 600; padding: 0 30px; line-height: 1.4; color: #fff; margin-top: 15px; text-shadow: 0 2px 10px #000; }
 
-        /* HEADER */
-        .header { width: 100%; text-align: center; padding-top: 30px; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 5px; font-weight: 900; }
-        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin-top: 3px; opacity: 0.6; }
-        
-        /* ХООЛНЫ НЭР - ДООШЛУУЛСАН */
-        .m-name { 
-            font-size: 1rem; font-weight: 600; padding: 0 40px; line-height: 1.35; 
-            color: #fff; text-align: center; max-width: 90%; margin: 30px auto 0 auto;
-            text-shadow: 0 2px 15px rgba(0,0,0,1); z-index: 100;
-        }
+        /* SWIPER & SLIDES */
+        .swiper { width: 100%; height: 100vh; display: none; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
 
-        /* FOOD VISUALS - ТОМРУУЛСАН БӨГӨӨД ДЭЭШЛҮҮЛСЭН */
-        .content-main {
-            display: flex; flex-direction: column; align-items: center;
-            width: 100%; flex: 1; justify-content: center;
-            margin-top: -85px; /* Илүү дээшээ өргөсөн */
-        }
-        .food-img { 
-            width: 92vw; max-width: 440px; height: auto; 
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.9)); 
-            animation: float 6s infinite ease-in-out; z-index: 5;
-        }
+        /* FOOD VISUALS (MIDDLE) */
+        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+        .food-img { width: 85vw; max-width: 380px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION & CALORIE */
-        .info-overlay { width: 94%; max-width: 420px; z-index: 20; display: flex; flex-direction: column; align-items: center; margin-top: -35px; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 4px 20px; background: rgba(0,0,0,0.85); border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 12px; backdrop-filter: blur(5px); }
-        .nutri-bar { display: flex; gap: 6px; width: 100%; justify-content: center; }
-        .n-card { flex: 1; background: rgba(15, 12, 10, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
+        /* NUTRITION BAR */
+        .nutri-bar { display: flex; gap: 8px; width: 100%; max-width: 400px; justify-content: center; margin-top: -20px; z-index: 20; }
+        .n-card { flex: 1; background: rgba(0, 0, 0, 0.85); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
         .n-v { font-size: 0.85rem; font-weight: 800; color: #fff; display: block; }
         .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
 
-        /* RATING & COMMENT - ДЭЭШЛҮҮЛСЭН */
-        .bottom-ui { 
-            width: 94%; max-width: 450px; background: rgba(255,255,255,0.08); 
-            border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(50px); 
-            border-radius: 25px; padding: 15px; box-sizing: border-box; 
-            text-align: center; margin-bottom: 85px; z-index: 150;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
-        }
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
-        .rating-label { font-size: 0.75rem; font-weight: 700; color: #fff; }
-        .stars { display: flex; gap: 6px; }
-        .star { font-size: 1.9rem; color: rgba(255,255,255,0.1); cursor: pointer; }
-        .comment { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+        /* BOTTOM UI */
+        .bottom-ui { width: 92%; max-width: 440px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); border-radius: 25px; padding: 18px; box-sizing: border-box; text-align: center; margin-bottom: 40px; z-index: 100; }
+        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .stars { display: flex; gap: 5px; }
+        .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; }
+        .comment { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
 
-        /* THEME COLORS */
-        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1); }
-        .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
-        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2); }
-        .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
-        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3); }
-        .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
+        /* INTRO SLIDE DESIGN */
+        .week-intro { text-align: center; }
+        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
+        .intro-text { font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-top: 10px; }
 
-        .swiper { width: 100%; height: 100vh; display: none; }
-        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.25; }
+        /* THEME COLORS PER WEEK */
+        body.bg-w1 .week-label, body.bg-w1 .n-l, body.bg-w1 .cal-badge, body.bg-w1 .intro-num { color: var(--w1); }
+        body.bg-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
+        
+        body.bg-w2 .week-label, body.bg-w2 .n-l, body.bg-w2 .cal-badge, body.bg-w2 .intro-num { color: var(--w2); }
+        body.bg-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
+
+        body.bg-w3 .week-label, body.bg-w3 .n-l, body.bg-w3 .cal-badge, body.bg-w3 .intro-num { color: var(--w3); }
+        body.bg-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
+
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
     </style>
 </head>
-<body class="bg-week-1">
+<body>
+
     <div id="bgMain"></div>
     <canvas id="canvas-snow"></canvas>
 
+    <!-- Splash Screen -->
     <div id="splash">
         <img src="logo.png" class="logo-anim" style="width:110px;">
         <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.75rem; opacity:0.6; font-family:'Montserrat'; letter-spacing:2px;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
+    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px; text-align:center;">СОНГОЛТ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">ЦЭС СОНГОХ</h2>
         <div class="week-opt opt-1" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-2" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-3" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -134,17 +116,17 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "Хоолны нэр энд орно", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
-            { week: 2, day: "Мягмар", name: "Хоолны нэр энд орно", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
-            { week: 2, day: "Лхагва", name: "Хоолны нэр энд орно", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
-            { week: 2, day: "Пүрэв", name: "Хоолны нэр энд орно", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
-            { week: 2, day: "Баасан", name: "Хоолны нэр энд орно", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
+            { week: 2, day: "Даваа", name: "2-р долоо хоногийн хоол", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Мягмар", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
+            { week: 2, day: "Лхагва", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
+            { week: 2, day: "Пүрэв", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
+            { week: 2, day: "Баасан", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "Хоолны нэр энд орно", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "Хоолны нэр энд орно", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "Хоолны нэр энд орно", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "Хоолны нэр энд орно", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "Хоолны нэр энд орно", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "3-р долоо хоногийн хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
         ];
 
         let mainSwiper;
@@ -159,39 +141,36 @@
             
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach(m => {
-                const theme = 'slide-w' + m.week;
                 if(m.type === 'intro') {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide ${theme} intro-slide" data-week="${m.week}">
-                        <div class="week-intro-content">
+                    <div class="swiper-slide intro-slide" data-week="${m.week}">
+                        <div class="week-intro">
                             <h1 class="intro-num">WEEK ${m.week}</h1>
                             <p class="intro-text">${m.week}-р долоо хоногийн хоолны цэс</p>
                         </div>
                     </div>`;
                 } else {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide ${theme}" data-week="${m.week}">
+                    <div class="swiper-slide" data-week="${m.week}">
                         <div class="header">
                             <div class="week-label">WEEK ${m.week}</div>
                             <div class="day-label">${m.day}</div>
+                            <div class="m-name">${m.name}</div>
                         </div>
-                        <div class="m-name">${m.name}</div>
-                        <div class="content-main">
-                            <div class="food-wrap">
-                                <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
-                                <div class="info-overlay">
-                                    <span class="cal-badge">${m.cal} KCAL</span>
-                                    <div class="nutri-bar">
-                                        <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
-                                        <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
-                                        <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
-                                        <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="food-wrap">
+                            <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
+                        </div>
+                        <div class="nutri-bar">
+                            <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
+                            <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
+                            <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
+                            <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
                         </div>
                         <div class="bottom-ui">
-                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЭ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+                            <span class="cal-badge">${m.cal} KCAL</span>
+                            <div class="rating-container">
+                                <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
+                            </div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
                     </div>`;
@@ -204,9 +183,8 @@
                     slideChange: function () {
                         const currentSlide = this.slides[this.activeIndex];
                         const week = currentSlide.getAttribute('data-week');
-                        document.body.className = 'bg-week-' + week;
+                        document.body.className = 'bg-w' + week;
                         
-                        // Auto-advance if Intro slide
                         if (currentSlide.classList.contains('intro-slide')) {
                             setTimeout(() => {
                                 if (this.activeIndex === Array.from(this.slides).indexOf(currentSlide)) {
@@ -226,14 +204,13 @@
             document.getElementById('bgMusic').play().catch(() => {});
             mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
-            const week = allMeals[index].week;
-            document.body.className = 'bg-week-' + week;
+            document.body.className = 'bg-w' + allMeals[index].week;
         }
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
         function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        // Snow
+        // Snow Animation
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -245,7 +222,7 @@
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 70; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
