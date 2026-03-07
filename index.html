@@ -10,35 +10,27 @@
         :root {
             --w1: #d4af37; /* Алтлаг шар */
             --w2: #e63946; /* Улаан */
-            --w3: #1d3557; /* Хөх */
-            --theme-color: var(--w1);
+            --w3: #00e5ff; /* Хөх */
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #111; color: white; overflow: hidden; }
         
-        /* 1. АРЫН ФОН - ХӨДӨЛГӨӨНТЭЙ БӨГӨӨД ӨНГӨ НЬ СОЛИГДОНО */
+        /* 1. АРЫН ФОН - ИЛҮҮ ТОД ТУЯАТАЙ БОЛГОСОН */
         #bgMain { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
-            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #0d0d0d;
+            transition: background 1s ease-in-out;
+            background: #1a1a1a;
         }
         
-        /* Долоо хоногоор солигдох туяанууд */
-        .bg-w1 { background: radial-gradient(circle at center, #2b2118 0%, #0a0a0a 100%) !important; }
-        .bg-w2 { background: radial-gradient(circle at center, #2b1212 0%, #0a0a0a 100%) !important; }
-        .bg-w3 { background: radial-gradient(circle at center, #121a2b 0%, #0a0a0a 100%) !important; }
-
-        /* Зөөлөн гэрэлтсэн хөдөлгөөнт туяа */
-        .glow-overlay {
-            position: absolute; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/black-linen.png');
-            opacity: 0.1; pointer-events: none;
-        }
+        /* Долоо хоногийн өнгөний ялгаа (Тас хар биш, тод туяанууд) */
+        .bg-w1 { background: radial-gradient(circle at center, #4a3a2a 0%, #0f0f0f 100%) !important; }
+        .bg-w2 { background: radial-gradient(circle at center, #5a1a1a 0%, #0f0f0f 100%) !important; }
+        .bg-w3 { background: radial-gradient(circle at center, #1a2a4a 0%, #0f0f0f 100%) !important; }
 
         /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(25px); }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
+        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(25px); }
+        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; font-weight: 900; }
         
         .opt-1 { color: var(--w1); border-color: var(--w1); }
         .opt-2 { color: var(--w2); border-color: var(--w2); }
@@ -50,62 +42,65 @@
 
         /* HEADER AREA */
         .header { width: 100%; text-align: center; padding-top: 25px; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 5px; font-weight: 900; transition: color 1s; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 6px; font-weight: 900; }
         .day-label { font-size: 1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin-top: 3px; opacity: 0.6; }
         
-        /* ХООЛНЫ НЭР - Зураг руу илүү ойртсон */
+        /* ХООЛНЫ НЭР - ДООШЛУУЛСАН */
         .m-name { 
             font-size: 1rem; font-weight: 600; padding: 0 40px; line-height: 1.35; 
-            color: #fff; text-align: center; max-width: 90%; margin: 10px auto 0 auto;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+            color: #fff; text-align: center; max-width: 90%; 
+            margin: 30px auto 0 auto; /* Дээрээс нь 30px зай авсан */
+            text-shadow: 0 2px 15px rgba(0,0,0,1);
             z-index: 100;
         }
 
-        /* FOOD WRAPPER - Дээшээ болгосон */
+        /* FOOD WRAPPER - ДЭЭШЛҮҮЛСЭН */
         .content-main {
             display: flex; flex-direction: column; align-items: center;
             width: 100%; flex: 1; 
             justify-content: center;
-            margin-top: -60px; /* Дээшээ маш сайн өргөсөн */
+            margin-top: -80px; /* Илүү дээшээ өргөсөн */
         }
 
         .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .food-img { 
-            width: 88vw; /* 82-оос 88 болгож томруулсан */
-            max-width: 400px; height: auto; 
+            width: 90vw; /* Илүү томруулсан */
+            max-width: 420px; height: auto; 
             filter: drop-shadow(0 30px 60px rgba(0,0,0,0.9)); 
             animation: float 6s infinite ease-in-out; z-index: 5;
-            transition: transform 0.5s ease;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION OVERLAY */
+        /* NUTRITION & CALORIE */
         .info-overlay { 
             width: 94%; max-width: 420px; z-index: 20; 
             display: flex; flex-direction: column; align-items: center; 
-            margin-top: -25px; 
+            margin-top: -35px; /* Зураг руу илүү шахах */
         }
         .cal-badge { 
             font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 4px 20px; 
-            background: rgba(0,0,0,0.85); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
-            margin-bottom: 12px; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.85); border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); 
+            margin-bottom: 12px; backdrop-filter: blur(10px);
         }
         .nutri-bar { display: flex; gap: 6px; width: 100%; justify-content: center; }
-        .n-card { flex: 1; background: rgba(15, 12, 10, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
+        .n-card { flex: 1; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.15); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
         .n-v { font-size: 0.85rem; font-weight: 800; color: #fff; display: block; }
         .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
 
-        /* RATING & COMMENT - Өргөгдсөн */
+        /* RATING & COMMENT - ДЭЭШЛҮҮЛСЭН */
         .bottom-ui { 
-            width: 94%; max-width: 450px; background: rgba(255,255,255,0.04); 
-            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); 
-            border-radius: 25px; padding: 15px; box-sizing: border-box; 
-            text-align: center; margin-bottom: 45px; z-index: 150;
+            width: 94%; max-width: 450px; background: rgba(255,255,255,0.08); 
+            border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(50px); 
+            border-radius: 25px; padding: 20px; box-sizing: border-box; 
+            text-align: center; 
+            margin-bottom: 80px; /* 45-аас 80 болгож дээшлүүлсэн */
+            z-index: 150;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
         }
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .rating-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }
-        .stars { display: flex; gap: 5px; }
-        .star { font-size: 1.8rem; color: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .rating-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: #fff; }
+        .stars { display: flex; gap: 6px; }
+        .star { font-size: 1.9rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s; }
         
         /* WEEK THEME COLORS */
         .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge { color: var(--w1); }
@@ -117,16 +112,14 @@
         .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge { color: var(--w3); }
         .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
-        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+        .comment { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
 
-        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.2; }
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.3; }
     </style>
 </head>
 <body>
-    <div id="bgMain" class="bg-w1">
-        <div class="glow-overlay"></div>
-    </div>
+    <div id="bgMain" class="bg-w1"></div>
     <canvas id="canvas-snow"></canvas>
 
     <div id="splash">
@@ -135,7 +128,7 @@
     </div>
 
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px; text-align:center;">СОНГОЛТ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">СОНГОЛТ</h2>
         <div class="week-opt opt-1" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-2" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-3" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -158,17 +151,17 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "Өдрийн хоол 2-1", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
-            { week: 2, day: "Мягмар", name: "Өдрийн хоол 2-2", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
-            { week: 2, day: "Лхагва", name: "Өдрийн хоол 2-3", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
-            { week: 2, day: "Пүрэв", name: "Өдрийн хоол 2-4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
-            { week: 2, day: "Баасан", name: "Өдрийн хоол 2-5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
+            { week: 2, day: "Даваа", name: "2-р долоо хоногийн амттай хоол", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Мягмар", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
+            { week: 2, day: "Лхагва", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
+            { week: 2, day: "Пүрэв", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
+            { week: 2, day: "Баасан", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "Өдрийн хоол 3-1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "Өдрийн хоол 3-2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "Өдрийн хоол 3-3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "Өдрийн хоол 3-4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "Өдрийн хоол 3-5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "3-р долоо хоногийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
         ];
 
         let mainSwiper;
@@ -189,7 +182,7 @@
                     <div class="swiper-slide ${theme}" data-week="${m.week}">
                         <div style="text-align:center; margin-top: auto; margin-bottom: auto;">
                             <h1 class="week-label" style="font-size:3.5rem;margin:0;">WEEK ${m.week}</h1>
-                            <p style="letter-spacing:10px; opacity:0.5; font-size:0.8rem;">ЭХЭЛЖ БАЙНА</p>
+                            <p style="letter-spacing:10px; opacity:0.5; font-size:0.9rem;">ЭХЭЛЖ БАЙНА</p>
                         </div>
                     </div>`;
                 } else {
@@ -218,7 +211,7 @@
                         </div>
 
                         <div class="bottom-ui">
-                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЕ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЭ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
                     </div>`;
@@ -256,7 +249,6 @@
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
         function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        // Snow Animation
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -264,11 +256,11 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.5 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.5 + 0.5; this.speed = Math.random() * 0.6 + 0.2; this.opacity = Math.random() * 0.3; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 70; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
