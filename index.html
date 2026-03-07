@@ -9,117 +9,133 @@
     <style>
         :root {
             --w1: #d4af37; /* Алтлаг шар */
-            --w2: #e63946; /* Дуршил төрүүлэм улаан */
-            --w3: #457b9d; /* Сүнслэг хөх */
-            --bg-base: #0a0807;
+            --w2: #e63946; /* Улаан */
+            --w3: #1d3557; /* Хөх */
+            --theme-color: var(--w1);
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: var(--bg-base); color: white; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
         
-        /* 1. ХӨДӨЛГӨӨНТЭЙ ГОЁМСОГ ФОН */
+        /* 1. АРЫН ФОН - ХӨДӨЛГӨӨНТЭЙ БӨГӨӨД ӨНГӨ НЬ СОЛИГДОНО */
         #bgMain { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
-            background: linear-gradient(135deg, #120d0b 0%, #1a1412 50%, #0d0d0d 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #0d0d0d;
         }
+        
+        /* Долоо хоногоор солигдох туяанууд */
+        .bg-w1 { background: radial-gradient(circle at center, #2b2118 0%, #0a0a0a 100%) !important; }
+        .bg-w2 { background: radial-gradient(circle at center, #2b1212 0%, #0a0a0a 100%) !important; }
+        .bg-w3 { background: radial-gradient(circle at center, #121a2b 0%, #0a0a0a 100%) !important; }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Зөөлөн гэрэлтсэн хөдөлгөөнт туяа */
+        .glow-overlay {
+            position: absolute; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/black-linen.png');
+            opacity: 0.1; pointer-events: none;
         }
-
-        /* Зөөлөн гэрэлтсэн аура эффект */
-        .bg-glow {
-            position: fixed; width: 150vw; height: 150vw; top: -25%; left: -25%;
-            background: radial-gradient(circle, rgba(184, 134, 11, 0.05) 0%, rgba(0,0,0,0) 60%);
-            z-index: -1; pointer-events: none; animation: glowMove 20s infinite alternate;
-        }
-        @keyframes glowMove { from { transform: translate(0, 0); } to { transform: translate(10%, 10%); } }
 
         /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(20px); }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
+        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(25px); }
+        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; }
         
         .opt-1 { color: var(--w1); border-color: var(--w1); }
         .opt-2 { color: var(--w2); border-color: var(--w2); }
         .opt-3 { color: var(--w3); border-color: var(--w3); }
 
-        /* HEADER AREA */
-        .header { width: 100%; text-align: center; padding-top: 30px; z-index: 100; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 6px; font-weight: 900; }
-        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin-top: 5px; opacity: 0.7; }
-        
-        /* 2. ХООЛНЫ НЭР - ДООШЛУУЛСАН */
-        .m-name { 
-            font-size: 1rem; font-weight: 600; padding: 0 40px; line-height: 1.4; 
-            color: #fff; text-align: center; max-width: 90%; margin: 30px auto 0 auto; /* margin-top-ийг нэмсэн */
-            text-shadow: 0 2px 15px rgba(0,0,0,0.6);
-        }
-
-        /* SWIPER */
+        /* MAIN LAYOUT */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; justify-content: flex-start; }
 
-        /* FOOD VISUALS - ТОМРУУЛСАН */
-        .food-wrap { position: relative; width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        /* HEADER AREA */
+        .header { width: 100%; text-align: center; padding-top: 25px; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 5px; font-weight: 900; transition: color 1s; }
+        .day-label { font-size: 1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 4px; margin-top: 3px; opacity: 0.6; }
+        
+        /* ХООЛНЫ НЭР - Зураг руу илүү ойртсон */
+        .m-name { 
+            font-size: 1rem; font-weight: 600; padding: 0 40px; line-height: 1.35; 
+            color: #fff; text-align: center; max-width: 90%; margin: 10px auto 0 auto;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+            z-index: 100;
+        }
+
+        /* FOOD WRAPPER - Дээшээ болгосон */
+        .content-main {
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%; flex: 1; 
+            justify-content: center;
+            margin-top: -60px; /* Дээшээ маш сайн өргөсөн */
+        }
+
+        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .food-img { 
-            width: 82vw; /* 75-аас 82 болгож томруулсан */
-            max-width: 360px; height: auto; 
-            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.9)); 
-            animation: float 6s infinite ease-in-out; z-index: 5; 
+            width: 88vw; /* 82-оос 88 болгож томруулсан */
+            max-width: 400px; height: auto; 
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.9)); 
+            animation: float 6s infinite ease-in-out; z-index: 5;
+            transition: transform 0.5s ease;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION & CALORIE OVERLAY */
-        .info-overlay { width: 92%; max-width: 400px; z-index: 20; display: flex; flex-direction: column; align-items: center; margin-top: -30px; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 5px 20px; background: rgba(0,0,0,0.75); border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px; backdrop-filter: blur(5px); }
+        /* NUTRITION OVERLAY */
+        .info-overlay { 
+            width: 94%; max-width: 420px; z-index: 20; 
+            display: flex; flex-direction: column; align-items: center; 
+            margin-top: -25px; 
+        }
+        .cal-badge { 
+            font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 4px 20px; 
+            background: rgba(0,0,0,0.85); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
+            margin-bottom: 12px; backdrop-filter: blur(5px);
+        }
         .nutri-bar { display: flex; gap: 6px; width: 100%; justify-content: center; }
-        .n-card { flex: 1; background: rgba(25, 20, 18, 0.9); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(5px); }
+        .n-card { flex: 1; background: rgba(15, 12, 10, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 12px 2px; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
         .n-v { font-size: 0.85rem; font-weight: 800; color: #fff; display: block; }
-        .n-l { font-size: 0.5rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
+        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
 
-        /* BOTTOM UI (RATING) */
+        /* RATING & COMMENT - Өргөгдсөн */
         .bottom-ui { 
-            width: 92%; max-width: 440px; background: rgba(255,255,255,0.06); 
-            border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(40px); 
-            border-radius: 25px; padding: 18px; box-sizing: border-box; 
-            text-align: center; margin-bottom: 50px; z-index: 100; 
+            width: 94%; max-width: 450px; background: rgba(255,255,255,0.04); 
+            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(40px); 
+            border-radius: 25px; padding: 15px; box-sizing: border-box; 
+            text-align: center; margin-bottom: 45px; z-index: 150;
         }
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
-        .rating-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }
-        .stars { display: flex; gap: 6px; }
-        .star { font-size: 1.85rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s; }
-        .comment { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
-
-        /* THEME COLORS BY WEEK */
+        .rating-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .rating-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }
+        .stars { display: flex; gap: 5px; }
+        .star { font-size: 1.8rem; color: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        
+        /* WEEK THEME COLORS */
         .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge { color: var(--w1); }
         .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
+        
         .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge { color: var(--w2); }
         .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
+
         .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge { color: var(--w3); }
         .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+
         .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.25; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.2; }
     </style>
 </head>
 <body>
-    <div id="bgMain"></div>
-    <div class="bg-glow"></div>
+    <div id="bgMain" class="bg-w1">
+        <div class="glow-overlay"></div>
+    </div>
     <canvas id="canvas-snow"></canvas>
 
-    <!-- Splash Screen -->
     <div id="splash">
         <img src="logo.png" class="logo-anim" style="width:110px;">
-        <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРгууль <br><span style="font-size:0.7rem; opacity:0.6;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
+        <div style="font-family:'Cinzel'; margin-top:20px; text-align:center;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.75rem; opacity:0.6; font-family:'Montserrat'; letter-spacing:2px;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
-    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px; text-align:center;">СОНГОЛТ ХИЙНЭ ҮҮ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px; text-align:center;">СОНГОЛТ</h2>
         <div class="week-opt opt-1" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-2" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt opt-3" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -142,17 +158,17 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "2-р долоо хоногийн амттай цэс", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
-            { week: 2, day: "Мягмар", name: "2-р долоо хоногийн амттай цэс", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
-            { week: 2, day: "Лхагва", name: "2-р долоо хоногийн амттай цэс", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
-            { week: 2, day: "Пүрэв", name: "2-р долоо хоногийн амттай цэс", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
-            { week: 2, day: "Баасан", name: "2-р долоо хоногийн амттай цэс", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
+            { week: 2, day: "Даваа", name: "Өдрийн хоол 2-1", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Мягмар", name: "Өдрийн хоол 2-2", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
+            { week: 2, day: "Лхагва", name: "Өдрийн хоол 2-3", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
+            { week: 2, day: "Пүрэв", name: "Өдрийн хоол 2-4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
+            { week: 2, day: "Баасан", name: "Өдрийн хоол 2-5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "3-р долоо хоногийн амттай цэс", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "3-р долоо хоногийн амттай цэс", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "3-р долоо хоногийн амттай цэс", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "3-р долоо хоногийн амттай цэс", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "3-р долоо хоногийн амттай цэс", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "Өдрийн хоол 3-1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "Өдрийн хоол 3-2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "Өдрийн хоол 3-3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "Өдрийн хоол 3-4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "Өдрийн хоол 3-5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
         ];
 
         let mainSwiper;
@@ -169,10 +185,16 @@
             allMeals.forEach(m => {
                 const theme = 'slide-w' + m.week;
                 if(m.type === 'intro') {
-                    wrapper.innerHTML += `<div class="swiper-slide ${theme}"><div style="text-align:center;"><h1 class="week-label" style="font-size:3.5rem;margin:0;">WEEK ${m.week}</h1><p style="letter-spacing:10px;opacity:0.5;font-size:0.9rem;">ЭХЭЛЖ БАЙНА</p></div></div>`;
+                    wrapper.innerHTML += `
+                    <div class="swiper-slide ${theme}" data-week="${m.week}">
+                        <div style="text-align:center; margin-top: auto; margin-bottom: auto;">
+                            <h1 class="week-label" style="font-size:3.5rem;margin:0;">WEEK ${m.week}</h1>
+                            <p style="letter-spacing:10px; opacity:0.5; font-size:0.8rem;">ЭХЭЛЖ БАЙНА</p>
+                        </div>
+                    </div>`;
                 } else {
                     wrapper.innerHTML += `
-                    <div class="swiper-slide ${theme}">
+                    <div class="swiper-slide ${theme}" data-week="${m.week}">
                         <div class="header">
                             <div class="week-label">WEEK ${m.week}</div>
                             <div class="day-label">${m.day}</div>
@@ -180,36 +202,55 @@
                         
                         <div class="m-name">${m.name}</div>
 
-                        <div class="food-wrap">
-                            <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
-                            <div class="info-overlay">
-                                <span class="cal-badge">${m.cal} KCAL</span>
-                                <div class="nutri-bar">
-                                    <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
-                                    <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
-                                    <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
-                                    <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                        <div class="content-main">
+                            <div class="food-wrap">
+                                <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
+                                <div class="info-overlay">
+                                    <span class="cal-badge">${m.cal} KCAL</span>
+                                    <div class="nutri-bar">
+                                        <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
+                                        <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
+                                        <div class="n-card"><span class="n-v">${m.c}</span><span class="n-l">Нүүрс</span></div>
+                                        <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="bottom-ui">
-                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЭ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+                            <div class="rating-container"><div class="rating-label">ҮНЭЛГЭЕ:</div><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
                     </div>`;
                 }
             });
 
-            mainSwiper = new Swiper('.swiper', { direction: 'vertical', speed: 600, mousewheel: true });
+            mainSwiper = new Swiper('.swiper', { 
+                direction: 'vertical', 
+                speed: 800, 
+                mousewheel: true,
+                on: {
+                    slideChange: function () {
+                        const week = this.slides[this.activeIndex].getAttribute('data-week');
+                        updateBG(week);
+                    }
+                }
+            });
         };
+
+        function updateBG(week) {
+            const bg = document.getElementById('bgMain');
+            bg.className = 'bg-w' + week;
+        }
 
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
             document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            mainSwiper.update(); mainSwiper.slideTo(index, 0);
+            mainSwiper.update(); 
+            mainSwiper.slideTo(index, 0);
+            updateBG(allMeals[index].week);
         }
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
@@ -227,7 +268,7 @@
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
