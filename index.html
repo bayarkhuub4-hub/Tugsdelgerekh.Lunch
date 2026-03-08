@@ -11,78 +11,77 @@
     <style>
         :root {
             --w1: #d4af37; --w2: #e63946; --w3: #4fc3f7;
-            --glass: rgba(255, 255, 255, 0.4);
-            --border: rgba(255, 255, 255, 0.6);
+            --glass: rgba(255, 255, 255, 0.45);
+            --border: rgba(255, 255, 255, 0.7);
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #fdfaf5; overflow: hidden; }
 
-        #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: 1s ease-in-out; background-color: #fdfaf5; background-image: radial-gradient(#d1c7bc 1px, transparent 1px); background-size: 25px 25px; }
-        #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; transition: 1.5s ease; }
+        /* 1. АРЫН ФОН - 100% АЖИЛЛАХ */
+        #bgMain { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
+            transition: 1s ease-in-out; 
+            background-color: #fdfaf5;
+            background-image: radial-gradient(#d1c7bc 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+        #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; }
         @keyframes rotateAura { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         body.bg-w1 #bgMain { background-color: #fdf5e6; }
         body.bg-w2 #bgMain { background-color: #fff0f0; }
         body.bg-w3 #bgMain { background-color: #f0faff; }
 
-        /* 1. ГОЁМСОГ SPLASH SCREEN */
+        /* 2. ГОЁМСОГ SPLASH SCREEN (Centered) */
         #splash { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: #fff; z-index: 5000; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); 
+            justify-content: center; align-items: center; transition: 0.8s ease; 
         }
-        
-        .logo-container { text-align: center; perspective: 1000px; }
         
         .logo-img { 
-            width: 140px; 
-            opacity: 0;
-            transform: scale(0.8) translateY(20px);
-            animation: elegantEntrance 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            width: 130px; 
+            opacity: 0; transform: scale(0.7);
+            animation: logoEntrance 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
+        @keyframes logoEntrance { to { opacity: 1; transform: scale(1); } }
 
         .school-info {
-            margin-top: 25px;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: textReveal 1s ease forwards 0.8s;
+            text-align: center; margin-top: 20px; opacity: 0;
+            animation: textReveal 0.8s ease forwards 0.5s;
         }
-
-        @keyframes elegantEntrance {
-            0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: blur(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-        }
-
-        @keyframes textReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes textReveal { to { opacity: 1; } }
 
         /* WEEK SELECTOR */
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 4000; background: rgba(255,255,255,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(40px); }
         .week-btn { width: 85%; max-width: 320px; padding: 25px; margin: 12px; background: #fff; border-radius: 25px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; font-family: 'Cinzel'; cursor: pointer; transition: 0.3s; font-weight: 900; }
 
-        /* CONTENT LAYOUT */
+        /* SWIPER CONTENT */
         .swiper { width: 100%; height: 100vh; display: none; }
         .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
 
+        /* INTRO SLIDE - ГОЛЛУУЛАХ */
         .intro-slide { justify-content: center !important; text-align: center; }
         .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
         .intro-sub { font-size: 1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.3; margin-top: 10px; }
 
+        /* HEADER AREA */
         .slide-header { text-align: center; padding-top: 20px; z-index: 50; }
-        .w-num { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 7px; font-weight: 900; margin: 0; }
-        .d-name { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; opacity: 0.6; color: #333; }
-        .f-name { font-size: 1.1rem; font-weight: 700; color: #222; max-width: 320px; line-height: 1.3; margin-top: 15px; }
+        .w-num { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 8px; font-weight: 900; margin: 0; }
+        .d-name { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; opacity: 0.5; color: #333; }
+        .f-name { font-size: 1.1rem; font-weight: 800; margin-top: 20px; color: #222; max-width: 320px; line-height: 1.3; }
 
-        .food-wrap { position: relative; width: 100%; flex: 1; display: flex; justify-content: center; align-items: center; z-index: 150; margin-top: -30px; }
-        .food-img { width: 92vw; max-width: 460px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
+        /* ХООЛНЫ ЗУРАГ (HAMGIIN NAANA) */
+        .food-wrap { position: relative; width: 100%; flex: 1; display: flex; justify-content: center; align-items: center; z-index: 150; margin-top: -20px; }
+        .food-img { width: 92vw; max-width: 460px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
+        /* CALORIE BADGE */
         .cal-badge { position: absolute; right: 5%; bottom: 15%; z-index: 200; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 6px 15px; background: rgba(255,255,255,0.9); border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
 
-        .glass-panel { width: 95%; max-width: 420px; padding: 20px; background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 35px; margin-top: -70px; z-index: 10; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin-bottom: 45px; }
-        .n-row { display: flex; gap: 6px; margin-bottom: 20px; }
+        /* GLASS PANEL */
+        .glass-panel { width: 95%; max-width: 420px; padding: 25px; background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 35px; margin-top: -70px; z-index: 10; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin-bottom: 45px; }
+        .n-row { display: flex; gap: 8px; margin-bottom: 20px; }
         .n-box { flex: 1; background: #fff; padding: 10px 2px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .n-box b { display: block; font-size: 0.85rem; color: #333; }
         .n-box i { font-style: normal; font-size: 0.5rem; text-transform: uppercase; font-weight: 700; opacity: 0.4; }
@@ -137,6 +136,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // --- ⚡ ХУРДАН SPLASH LOGIC (БҮХНИЙ ДЭЭР) ---
+        (function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splash');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                        document.getElementById('weekSelector').style.display = 'flex';
+                    }, 800);
+                }
+            }, 1800); // 1.8 секунд харуулаад шууд арилна
+        })();
+
         const allMeals = [
             { week: 1, type: 'intro' },
             { week: 1, day: "Даваа", name: "Ногооны зутан шөл, гоймонтой хуурга", cal: "640", p: "32г", f: "24г", c: "75г", fi: "10г", img: "mon1.png" },
@@ -162,29 +175,7 @@
         let introTimer;
         let userRatings = {};
 
-        // --- ⚡ ХУРДАН SPLASH LOGIC ---
-        function handleSplash() {
-            const splash = document.getElementById('splash');
-            //window.onload хүлээхгүйгээр 2 секунд харуулаад шууд шилжинэ
-            setTimeout(() => {
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    document.getElementById('weekSelector').style.display = 'flex';
-                }, 1000);
-            }, 2200); 
-        }
-        handleSplash();
-
-        function preloadImages() {
-            allMeals.filter(m => m.img).forEach(m => {
-                const img = new Image();
-                img.src = m.img;
-            });
-        }
-        preloadImages();
-
-        function initApp() {
+        function initAppStructure() {
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach((m, idx) => {
                 if(m.type === 'intro') {
@@ -213,9 +204,10 @@
                             <button class="send-btn" onclick="submitData(${idx})">ИЛГЭЭХ</button>
                         </div>
                     </div>`;
+                }
             });
         }
-        initApp();
+        initAppStructure();
 
         function setupSwiper() {
             mainSwiper = new Swiper('.swiper', { 
@@ -256,8 +248,7 @@
 
         function showToast(msg) {
             const toast = document.getElementById('customToast');
-            toast.innerText = msg;
-            toast.style.display = 'block';
+            toast.innerText = msg; toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
         }
 
@@ -276,8 +267,9 @@
             if(!mainSwiper) setupSwiper();
             mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
+            
             const activeSlide = mainSwiper.slides[index];
-            if (activeSlide.classList.contains('intro-slide')) {
+            if (activeSlide && activeSlide.classList.contains('intro-slide')) {
                 clearTimeout(introTimer);
                 introTimer = setTimeout(() => { mainSwiper.slideNext(); }, 3000);
             }
