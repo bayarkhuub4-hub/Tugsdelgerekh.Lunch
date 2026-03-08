@@ -8,107 +8,96 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --w1-bg: #fff9e6; --w1-accent: #d4af37; /* Алтлаг шар */
-            --w2-bg: #fff0f0; --w2-accent: #e63946; /* Улаан */
-            --w3-bg: #f0faff; --w3-accent: #4fc3f7; /* Цайвар цэнхэр */
-            --glass: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --text: #3d2b1f;
+            --w1-bg: #fffcf0; --w1-accent: #d4af37; /* Нарлаг шар */
+            --w2-bg: #fff5f5; --w2-accent: #ff6b6b; /* Эгдүүтэй ягаан */
+            --w3-bg: #f0faff; --w3-accent: #4fc3f7; /* Тэнгэрийн цэнхэр */
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #fff; color: var(--text); overflow: hidden; transition: 0.8s ease; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; overflow: hidden; transition: background 1s ease; }
         
-        /* АРЫН ФОН - ЦАЙВАР ТУЯАТАЙ */
-        #bgMain { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
-            transition: background 1s ease-in-out;
-            background: var(--w1-bg);
-        }
+        /* АРЫН ФОН */
+        #bgContainer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: 1s ease; background: var(--w1-bg); }
 
         /* SPLASH SCREEN */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        .logo-anim { width: 120px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); margin-bottom: 20px; animation: bounce 2s infinite ease-in-out; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .logo-anim { width: 120px; animation: bounce 2s infinite ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         /* WEEK SELECTOR */
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #fff; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .selector-title { font-family: 'Cinzel'; letter-spacing: 5px; margin-bottom: 30px; color: var(--text); }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: #fff; border: 2px solid #eee; border-radius: 20px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.3s; font-size: 1.1rem; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .selector-title { font-family: 'Cinzel'; letter-spacing: 3px; color: #333; margin-bottom: 30px; font-weight: 900; }
+        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: #fff; border: 3px solid #eee; border-radius: 30px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.3s; font-size: 1.1rem; box-shadow: var(--shadow); }
 
-        /* HEADER AREA */
+        /* HEADER */
         .header { width: 100%; text-align: center; padding-top: 35px; z-index: 100; }
         .week-label { font-family: 'Cinzel'; font-size: 1.5rem; letter-spacing: 8px; font-weight: 900; }
-        .day-label { font-size: 1.1rem; font-weight: 300; text-transform: uppercase; letter-spacing: 5px; margin-top: 5px; color: #666; }
-        .m-name { font-size: 1.1rem; font-weight: 700; padding: 0 40px; line-height: 1.4; color: var(--text); text-align: center; margin: 20px auto 0 auto; }
+        .day-label { font-size: 1.1rem; font-weight: 300; text-transform: uppercase; letter-spacing: 5px; margin-top: 5px; color: #888; }
+        
+        .m-name { font-size: 1.1rem; font-weight: 800; padding: 0 40px; line-height: 1.4; color: #444; text-align: center; margin: 25px auto 0 auto; }
 
         /* SWIPER */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; justify-content: flex-start; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 10px; box-sizing: border-box; }
 
-        /* FOOD VISUALS (BIG & HIGHER) */
+        /* FOOD VISUALS */
         .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -60px; }
-        .food-img { width: 92vw; max-width: 450px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1)); animation: float 6s infinite ease-in-out; z-index: 5; }
+        .food-img { width: 92vw; max-width: 480px; height: auto; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.1)); animation: float 6s infinite ease-in-out; z-index: 5; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* INFO PANELS (WHITE GLASS) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-
-        .info-panel { width: 94%; max-width: 420px; z-index: 20; margin-top: -50px; padding: 15px; text-align: center; }
-        .cal-badge { font-size: 0.85rem; font-weight: 800; letter-spacing: 1px; padding: 6px 20px; background: #fff; border-radius: 50px; margin-bottom: 12px; display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        /* INFO PANELS */
+        .info-card { width: 94%; max-width: 420px; z-index: 20; margin-top: -55px; padding: 18px; text-align: center; border-radius: 30px; background: var(--glass-white); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid #fff; box-shadow: var(--shadow); }
+        .cal-tag { font-size: 0.85rem; font-weight: 800; padding: 6px 22px; background: #fff; border-radius: 50px; margin-bottom: 12px; display: inline-block; color: #555; }
         
-        .nutri-bar { display: flex; gap: 8px; width: 100%; justify-content: center; }
-        .n-card { flex: 1; background: #fff; padding: 12px 2px; border-radius: 15px; text-align: center; }
-        .n-v { font-size: 0.95rem; font-weight: 800; color: var(--text); display: block; }
-        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 4px; color: #888; }
+        .nutri-bar { display: flex; gap: 8px; width: 100%; }
+        .n-card { flex: 1; background: #fff; padding: 12px 2px; border-radius: 20px; text-align: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); }
+        .n-v { font-size: 0.95rem; font-weight: 800; display: block; color: #333; }
+        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 4px; color: #aaa; }
 
         /* RATING & COMMENT (RAISED) */
-        .bottom-ui { width: 94%; max-width: 450px; padding: 20px; text-align: center; margin-bottom: 70px; z-index: 100; }
+        .bottom-ui { width: 94%; max-width: 450px; padding: 22px; text-align: center; margin-bottom: 75px; z-index: 100; border-radius: 35px; background: var(--glass-white); backdrop-filter: blur(10px); border: 1px solid #fff; box-shadow: var(--shadow); }
         .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .star { font-size: 2.2rem; color: #ddd; cursor: pointer; transition: 0.2s; }
-        .comment { width: 100%; background: #fff; border: 1px solid #eee; border-radius: 15px; padding: 12px; color: #333; font-family: 'Montserrat'; font-size: 0.9rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
+        .star { font-size: 2.2rem; color: #eee; cursor: pointer; transition: 0.2s; }
+        .comment { width: 100%; background: #fff; border: 2px solid #f0f0f0; border-radius: 20px; padding: 12px; color: #333; font-family: 'Montserrat'; font-size: 0.9rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
 
         /* INTRO SLIDE */
         .week-intro { text-align: center; margin-top: auto; margin-bottom: auto; }
         .intro-num { font-family: 'Cinzel'; font-size: 5rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-top: 10px; font-weight: bold; }
+        .intro-text { font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; color: #777; margin-top: 10px; font-weight: bold; }
 
-        /* Theme Application per Week */
-        body.bg-w1 #bgMain { background: var(--w1-bg); }
-        body.bg-w1 .week-label, body.bg-w1 .cal-badge, body.bg-w1 .intro-num, body.bg-w1 .n-l { color: var(--w1-accent); }
+        /* Week Themes */
+        body.bg-w1 .week-label, body.bg-w1 .cal-tag, body.bg-w1 .intro-num, body.bg-w1 .n-l { color: var(--w1-accent); }
         body.bg-w1 .star.active { color: var(--w1-accent); filter: drop-shadow(0 0 10px var(--w1-accent)); }
+        body.bg-w1 #bgContainer { background: var(--w1-bg); }
 
-        body.bg-w2 #bgMain { background: var(--w2-bg); }
-        body.bg-w2 .week-label, body.bg-w2 .cal-badge, body.bg-w2 .intro-num, body.bg-w2 .n-l { color: var(--w2-accent); }
+        body.bg-w2 .week-label, body.bg-w2 .cal-tag, body.bg-w2 .intro-num, body.bg-w2 .n-l { color: var(--w2-accent); }
         body.bg-w2 .star.active { color: var(--w2-accent); filter: drop-shadow(0 0 10px var(--w2-accent)); }
+        body.bg-w2 #bgContainer { background: var(--w2-bg); }
 
-        body.bg-w3 #bgMain { background: var(--w3-bg); }
-        body.bg-w3 .week-label, body.bg-w3 .cal-badge, body.bg-w3 .intro-num, body.bg-w3 .n-l { color: var(--w3-accent); }
+        body.bg-w3 .week-label, body.bg-w3 .cal-tag, body.bg-w3 .intro-num, body.bg-w3 .n-l { color: var(--w3-accent); }
         body.bg-w3 .star.active { color: var(--w3-accent); filter: drop-shadow(0 0 10px var(--w3-accent)); }
+        body.bg-w3 #bgContainer { background: var(--w3-bg); }
 
-        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: #fff; border: 1px solid #eee; color: #333; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 150; pointer-events: none; opacity: 0.6; }
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: #fff; border: none; color: #555; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 150; pointer-events: none; opacity: 0.5; }
     </style>
 </head>
 <body class="bg-w1">
 
-    <div id="bgMain"></div>
+    <div id="bgContainer"></div>
     <canvas id="canvas-snow"></canvas>
 
     <!-- Splash -->
     <div id="splash">
         <img src="logo.png" class="logo-anim">
-        <div style="font-family:'Cinzel'; text-align:center; color: #333; font-weight: 700;">
+        <div style="font-family:'Cinzel'; text-align:center; color: #333; margin-top: 15px;">
             ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br>
-            <span style="font-size:0.8rem; opacity:0.6; font-family:'Montserrat'; letter-spacing:2px;">ҮДИЙН ХООЛНЫ ЦЭС</span>
+            <span style="font-size:0.75rem; opacity:0.5; font-family:'Montserrat'; letter-spacing:2px; font-weight: 800;">ҮДИЙН ХООЛНЫ ЦЭС</span>
         </div>
     </div>
 
-    <!-- Week Selector -->
+    <!-- Selector -->
     <div id="weekSelector">
         <h2 class="selector-title">ЦЭС СОНГОХ</h2>
         <div class="week-opt" style="color:var(--w1-accent); border-color:var(--w1-accent);" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
@@ -119,6 +108,7 @@
     <button class="menu-btn" id="backBtn" onclick="showMenu()">☰</button>
     <audio id="bgMusic" src="bg-music.mp3" loop></audio>
 
+    <!-- App -->
     <div class="swiper">
         <div class="swiper-wrapper" id="swiperWrapper"></div>
     </div>
@@ -164,7 +154,7 @@
                     <div class="swiper-slide ${theme} intro-slide" data-week="${m.week}">
                         <div class="week-intro">
                             <h1 class="intro-num">WEEK ${m.week}</h1>
-                            <p class="intro-text">${m.week}-р долоо хоногийн хоолны цэс</p>
+                            <p class="intro-text">${m.week}-р долоо хоногийн цэс</p>
                         </div>
                     </div>`;
                 } else {
@@ -178,8 +168,8 @@
                         <div class="food-wrap">
                             <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.1'">
                         </div>
-                        <div class="glass-card info-panel">
-                            <div class="cal-badge">${m.cal} KCAL</div>
+                        <div class="info-card">
+                            <div class="cal-tag">${m.cal} KCAL</div>
                             <div class="nutri-bar">
                                 <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
                                 <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
@@ -187,7 +177,7 @@
                                 <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
                             </div>
                         </div>
-                        <div class="glass-card bottom-ui">
+                        <div class="bottom-ui">
                             <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
@@ -222,7 +212,7 @@
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
         function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        // Snow Animation
+        // Snow (Cute Black/Grey dots for light theme)
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -230,11 +220,11 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.5 + 0.3; this.opacity = Math.random() * 0.5; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(0, 0, 0, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
