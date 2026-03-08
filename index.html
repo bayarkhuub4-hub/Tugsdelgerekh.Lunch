@@ -26,7 +26,7 @@
         body.bg-w2 #bgMain { background-color: #fff0f0; }
         body.bg-w3 #bgMain { background-color: #f0faff; }
 
-        /* 2. SPLASH SCREEN (ШУУД АЖИЛЛАХ ТОХИРГОО) */
+        /* 2. SPLASH SCREEN */
         #splash { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: #fff; z-index: 9999; 
@@ -45,6 +45,10 @@
         /* WEEK SELECTOR */
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 4000; background: rgba(255,255,255,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(40px); }
         .week-btn { width: 85%; max-width: 320px; padding: 25px; margin: 12px; background: #fff; border-radius: 25px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; font-family: 'Cinzel'; cursor: pointer; transition: 0.3s; font-weight: 900; }
+        
+        /* Цэсний нэрийг томруулах засвар */
+        .week-btn h3 { font-size: 1.5rem; margin-bottom: 5px; }
+        .week-btn small { font-size: 1.1rem; font-weight: 600; opacity: 0.8; }
 
         /* SWIPER CONTENT */
         .swiper { width: 100%; height: 100vh; display: none; }
@@ -55,7 +59,7 @@
         .intro-slide-content { opacity: 0; transform: scale(0.9); transition: 1s ease; }
         .swiper-slide-active .intro-slide-content { opacity: 1; transform: scale(1); }
         .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
-        .intro-sub { font-size: 1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.3; margin-top: 10px; }
+        .intro-sub { font-size: 1.2rem; letter-spacing: 2px; font-weight: 800; opacity: 0.5; margin-top: 10px; }
 
         /* HEADER AREA */
         .slide-header { text-align: center; padding-top: 20px; z-index: 50; opacity: 0; transform: translateY(-20px); transition: 0.8s ease 0.2s; }
@@ -64,7 +68,7 @@
         .d-name { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin: 5px 0 15px 0; opacity: 0.6; color: #333; }
         .f-name { font-size: 1.1rem; font-weight: 700; color: #222; max-width: 320px; line-height: 1.3; }
 
-        /* 2. ХООЛНЫ ЗУРАГ (HAMGIIN NAANA) */
+        /* FOOD VISUALS */
         .food-wrap { position: relative; width: 100%; flex: 1; display: flex; justify-content: center; align-items: center; z-index: 150; margin-top: -30px; opacity: 0; transform: scale(0.85); transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s; }
         .swiper-slide-active .food-wrap { opacity: 1; transform: scale(1); }
         .food-img { width: 90vw; max-width: 460px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
@@ -73,7 +77,7 @@
         .cal-badge { position: absolute; right: 5%; bottom: 15%; z-index: 200; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 6px 15px; background: rgba(255,255,255,0.9); border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; opacity: 0; transform: translateX(20px); transition: 0.6s ease 0.8s; }
         .swiper-slide-active .cal-badge { opacity: 1; transform: translateX(0); }
 
-        /* 3. GLASS PANEL (AR TALRUUNA) */
+        /* GLASS PANEL */
         .glass-panel { width: 95%; max-width: 420px; padding: 20px; background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 35px; margin-top: -70px; z-index: 10; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin-bottom: 45px; opacity: 0; transform: translateY(30px); transition: 0.8s ease 0.6s; }
         .swiper-slide-active .glass-panel { opacity: 1; transform: translateY(0); }
 
@@ -82,7 +86,7 @@
         .n-box b { display: block; font-size: 0.85rem; color: #333; }
         .n-box i { font-style: normal; font-size: 0.5rem; text-transform: uppercase; font-weight: 700; opacity: 0.4; }
 
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
         .rating-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: #333; opacity: 0.6; }
         .star-row { display: flex; gap: 6px; }
         .star { font-size: 2.1rem; color: rgba(0,0,0,0.08); cursor: pointer; transition: 0.3s; }
@@ -119,7 +123,8 @@
 
     <!-- 2. WEEK SELECTOR -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:5px; color: #333;">ҮДИЙН ХООЛНЫ ЦЭС </h2>
+        <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:5px; color: #333;">ЦЭС СОНГОХ</h2>
+        <!-- Хэмжээг нь томруулсан цэснүүд -->
         <div class="week-btn" style="border-top: 5px solid #d4af37; color: #d4af37;" onclick="jumpTo(0)"><h3>WEEK 1</h3><small>1-р долоо хоног</small></div>
         <div class="week-btn" style="border-top: 5px solid #e63946; color: #e63946;" onclick="jumpTo(6)"><h3>WEEK 2</h3><small>2-р долоо хоног</small></div>
         <div class="week-btn" style="border-top: 5px solid #4fc3f7; color: #4fc3f7;" onclick="jumpTo(12)"><h3>WEEK 3</h3><small>3-р долоо хоног</small></div>
@@ -134,7 +139,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // --- 1. ШУУД АЖИЛЛАХ SPLASH LOGIC ---
+        // --- ⚡ ХУРДАН SPLASH LOGIC ---
         (function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash');
@@ -145,7 +150,7 @@
                         document.getElementById('weekSelector').style.display = 'flex';
                     }, 800);
                 }
-            }, 1800); // 1.8 секунд харуулаад шууд арилна
+            }, 1800); 
         })();
 
         const allMeals = [
@@ -173,7 +178,6 @@
         let introTimer;
         let userRatings = {};
 
-        // App HTML бүтэц үүсгэх
         function initAppStructure() {
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach((m, idx) => {
@@ -182,7 +186,7 @@
                     <div class="swiper-slide intro-slide" data-week="${m.week}">
                         <div class="intro-slide-content">
                             <h1 class="intro-num">WEEK ${m.week}</h1>
-                            <div class="intro-sub">ЭХЭЛЖ БАЙНА</div>
+                            <div class="intro-sub">${m.week}-Р ДОЛОО ХОНОГ</div>
                         </div>
                     </div>`;
                 } else {
@@ -217,7 +221,6 @@
                         document.body.className = 'bg-w' + week;
                         updateAura(week);
                         
-                        // АВТОМАТ ШИЛЖИЛТ (3 сек)
                         clearTimeout(introTimer);
                         if (activeSlide.classList.contains('intro-slide')) {
                             introTimer = setTimeout(() => { mainSwiper.slideNext(); }, 3000);
@@ -266,7 +269,6 @@
             mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
 
-            // Force first jump intro timer
             const activeSlide = mainSwiper.slides[index];
             if (activeSlide && activeSlide.classList.contains('intro-slide')) {
                 clearTimeout(introTimer);
@@ -294,5 +296,3 @@
     </script>
 </body>
 </html>
-
-
