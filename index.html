@@ -3,102 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Төгсдэлгэрэх - Lunch App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Үүрийн Шүүдэр - Premium Lunch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Montserrat:wght@100;300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            /* Долоо хоногийн өнгөнүүд - Логоноос авсан */
-            --w1-bg: #fdf5e6; --w1-accent: #d4af37; /* Алтлаг шар */
-            --w2-bg: #fff0f0; --w2-accent: #e63946; /* Улаан */
-            --w3-bg: #f0faff; --w3-accent: #4fc3f7; /* Цайвар цэнхэр */
-            --current-accent: var(--w1-accent);
+            --w1: #d4af37; /* Gold */
+            --w2: #ff4d4d; /* Red */
+            --w3: #00d2ff; /* Sky Blue */
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; overflow: hidden; transition: 0.5s; }
-        
-        /* 1. АРЫН ФОН - ТАС ХАР БИШ, ТУЯАТАЙ ЦАЙВАР */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
+
+        /* 1. ХӨДӨЛГӨӨНТЭЙ БАРААН ФОН (Premium Dark Mesh) */
         #bgContainer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            transition: background 1s ease-in-out;
-            background: var(--w1-bg);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            transition: 1.5s ease-in-out;
+            background: #080808;
         }
+
+        /* Долоо хоногоор солигдох зөөлөн хөдөлгөөнтэй гэрэл */
+        .bg-glow {
+            position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%;
+            filter: blur(100px); opacity: 0.15; z-index: -1;
+            animation: moveGlow 20s infinite alternate;
+            transition: 1.5s ease;
+        }
+        @keyframes moveGlow { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(15%, 15%) rotate(30deg); } }
 
         /* SPLASH & SELECTOR */
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #fff; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: #fff; border: 2px solid #eee; border-radius: 20px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        
-        /* HEADER AREA */
-        .header { width: 100%; text-align: center; padding-top: 40px; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 6px; font-weight: 900; margin-bottom: 5px; }
-        .day-label { font-size: 1.1rem; font-weight: 300; text-transform: uppercase; letter-spacing: 4px; color: #333; }
-        .m-name { font-size: 1.05rem; font-weight: 600; padding: 0 35px; line-height: 1.4; color: #444; text-align: center; margin-top: 20px; }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
+        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(20px); }
+        .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; letter-spacing: 2px; }
 
-        /* MAIN SWIPER */
+        /* HEADER AREA */
+        .header { width: 100%; text-align: center; padding-top: 35px; z-index: 100; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 8px; font-weight: 900; }
+        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 5px; margin-top: 5px; opacity: 0.6; }
+        .m-name { font-size: 1rem; font-weight: 500; padding: 0 40px; line-height: 1.4; color: #fff; text-align: center; margin-top: 15px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+        /* SWIPER */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 10px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px; box-sizing: border-box; }
 
         /* FOOD VISUALS (ДЭЭШЛҮҮЛСЭН) */
-        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -30px; }
-        .food-img { width: 90vw; max-width: 400px; height: auto; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
+        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -40px; }
+        .food-img { width: 88vw; max-width: 420px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* NUTRITION & CALORIE (ЗУРАГ ДЭЭР ДАВХЦАХ) */
-        .info-panel { width: 92%; max-width: 400px; z-index: 20; display: flex; flex-direction: column; align-items: center; margin-top: -50px; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 6px 20px; background: #fff; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px; border: 1px solid #eee; }
-        .nutri-bar { display: flex; gap: 8px; width: 100%; justify-content: center; }
-        .n-card { flex: 1; background: rgba(255, 255, 255, 0.9); border: 1px solid #eee; padding: 12px 2px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .n-v { font-size: 0.9rem; font-weight: 800; color: #333; display: block; }
-        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 4px; }
+        /* 2. ШИЛЭН ТУНГАЛАГ ХЭСЭГ (Glassmorphism) */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 100%; box-sizing: border-box;
+        }
 
-        /* BOTTOM UI */
-        .bottom-ui { width: 92%; max-width: 440px; background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid #fff; border-radius: 30px; padding: 20px; box-sizing: border-box; text-align: center; margin-bottom: 45px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .rating-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
-        .stars { display: flex; gap: 5px; }
-        .star { font-size: 1.8rem; color: #ddd; cursor: pointer; transition: 0.2s; }
-        .comment { width: 100%; background: #fff; border: 1px solid #eee; border-radius: 15px; padding: 12px; color: #333; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
+        /* NUTRITION & CALORIE OVERLAY */
+        .info-panel { width: 94%; max-width: 420px; z-index: 20; margin-top: -55px; padding: 15px; }
+        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 6px 20px; background: rgba(0,0,0,0.6); border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 12px; display: inline-block; }
+        .nutri-bar { display: flex; gap: 6px; width: 100%; }
+        .n-card { flex: 1; text-align: center; padding: 8px 0; }
+        .n-v { font-size: 0.9rem; font-weight: 800; color: #fff; display: block; }
+        .n-l { font-size: 0.5rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
+
+        /* BOTTOM UI (RATING) */
+        .bottom-ui { 
+            width: 94%; max-width: 440px; padding: 20px; 
+            text-align: center; margin-bottom: 50px; z-index: 100;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
 
         /* INTRO SLIDE */
         .week-intro { text-align: center; margin-top: auto; margin-bottom: auto; }
         .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; color: #555; margin-top: 10px; font-weight: bold; }
+        .intro-text { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-top: 10px; }
 
-        /* Theme Color Dynamic Application */
-        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1-accent); }
-        .slide-w1 .star.active { color: var(--w1-accent); }
-        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2-accent); }
-        .slide-w2 .star.active { color: var(--w2-accent); }
-        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3-accent); }
-        .slide-w3 .star.active { color: var(--w3-accent); }
+        /* THEME COLOR INJECTION */
+        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1); }
+        .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
+        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2); }
+        .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
+        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3); }
+        .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
-        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: #fff; border: 1px solid #eee; color: #333; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.3; }
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
     </style>
 </head>
 <body>
 
-    <div id="bgContainer"></div>
+    <div id="bgContainer">
+        <div id="glow" class="bg-glow"></div>
+    </div>
     <canvas id="canvas-snow"></canvas>
 
-    <!-- 1. Splash -->
+    <!-- Splash Screen -->
     <div id="splash">
         <img src="logo.png" style="width:110px; margin-bottom: 20px;">
-        <div style="font-family:'Cinzel'; text-align:center; color: #333;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.75rem; opacity:0.6; font-family:'Montserrat';">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
+        <div style="font-family:'Cinzel'; text-align:center; color: white;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.7rem; opacity:0.6; font-family:'Montserrat';">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
-    <!-- 2. Week Selector -->
+    <!-- Week Selector -->
     <div id="weekSelector">
         <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">ЦЭС СОНГОХ</h2>
-        <div class="week-opt" style="color:var(--w1-accent); border-color:var(--w1-accent);" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
-        <div class="week-opt" style="color:var(--w2-accent); border-color:var(--w2-accent);" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
-        <div class="week-opt" style="color:var(--w3-accent); border-color:var(--w3-accent);" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
+        <div class="week-opt" style="color:var(--w1); border-color:var(--w1);" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
+        <div class="week-opt" style="color:var(--w2); border-color:var(--w2);" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
+        <div class="week-opt" style="color:var(--w3); border-color:var(--w3);" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
     </div>
 
     <button class="menu-btn" id="backBtn" onclick="showMenu()">☰</button>
     <audio id="bgMusic" src="bg-music.mp3" loop></audio>
 
-    <!-- 3. Swiper App -->
     <div class="swiper">
         <div class="swiper-wrapper" id="swiperWrapper"></div>
     </div>
@@ -128,9 +151,9 @@
 
         let mainSwiper;
         const bg = document.getElementById('bgContainer');
+        const glow = document.getElementById('glow');
 
         window.onload = () => {
-            // Splash 1.5s
             setTimeout(() => {
                 document.getElementById('splash').style.opacity = '0';
                 setTimeout(() => {
@@ -143,26 +166,15 @@
             allMeals.forEach((m, index) => {
                 const theme = 'slide-w' + m.week;
                 if(m.type === 'intro') {
-                    wrapper.innerHTML += `
-                    <div class="swiper-slide ${theme} intro-slide" data-week="${m.week}">
-                        <div class="week-intro">
-                            <h1 class="intro-num">WEEK ${m.week}</h1>
-                            <p class="intro-text">${m.week}-р долоо хоногийн хоолны цэс</p>
-                        </div>
-                    </div>`;
+                    wrapper.innerHTML += `<div class="swiper-slide ${theme} intro-slide" data-week="${m.week}"><div class="week-intro"><h1 class="intro-num">WEEK ${m.week}</h1><p class="intro-text">${m.week}-р долоо хоногийн цэс</p></div></div>`;
                 } else {
                     wrapper.innerHTML += `
                     <div class="swiper-slide ${theme}" data-week="${m.week}">
-                        <div class="header">
-                            <div class="week-label">WEEK ${m.week}</div>
-                            <div class="day-label">${m.day}</div>
-                        </div>
+                        <div class="header"><div class="week-label">WEEK ${m.week}</div><div class="day-label">${m.day}</div></div>
                         <div class="m-name">${m.name}</div>
-                        <div class="food-wrap">
-                            <img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'">
-                        </div>
-                        <div class="info-panel">
-                            <span class="cal-badge">${m.cal} KCAL</span>
+                        <div class="food-wrap"><img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'"></div>
+                        <div class="glass-panel info-panel">
+                            <div class="cal-badge">${m.cal} KCAL</div>
                             <div class="nutri-bar">
                                 <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
                                 <div class="n-card"><span class="n-v">${m.f}</span><span class="n-l">Өөх</span></div>
@@ -170,8 +182,8 @@
                                 <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
                             </div>
                         </div>
-                        <div class="bottom-ui">
-                            <div class="rating-container"><div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div></div>
+                        <div class="glass-panel bottom-ui">
+                            <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
                     </div>`;
@@ -179,60 +191,39 @@
             });
 
             mainSwiper = new Swiper('.swiper', { 
-                direction: 'vertical', 
-                speed: 800, 
-                mousewheel: true,
+                direction: 'vertical', speed: 800, mousewheel: true,
                 on: {
                     slideChange: function () {
                         const activeSlide = this.slides[this.activeIndex];
                         const week = activeSlide.getAttribute('data-week');
-                        
-                        // Арын фон солих (100% ажиллана)
-                        if(week == 1) bg.style.background = "#fdf5e6";
-                        else if(week == 2) bg.style.background = "#fff0f0";
-                        else if(week == 3) bg.style.background = "#f0faff";
-
-                        // Intro Slide бол 3 секундын дараа автоматаар шилжих
+                        updateTheme(week);
                         if (activeSlide.classList.contains('intro-slide')) {
-                            setTimeout(() => {
-                                if (mainSwiper.activeIndex === Array.from(mainSwiper.slides).indexOf(activeSlide)) {
-                                    mainSwiper.slideNext();
-                                }
-                            }, 3000);
+                            setTimeout(() => { if (mainSwiper.activeIndex === Array.from(mainSwiper.slides).indexOf(activeSlide)) mainSwiper.slideNext(); }, 3000);
                         }
                     }
                 }
             });
         };
 
+        function updateTheme(week) {
+            if(week == 1) { glow.style.background = "radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
+            else if(week == 2) { glow.style.background = "radial-gradient(circle, rgba(230, 57, 70, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
+            else if(week == 3) { glow.style.background = "radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
+        }
+
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
             document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            
-            mainSwiper.update();
-            mainSwiper.slideTo(index, 0);
-
-            // Анхны фон тохируулах
-            const week = allMeals[index].week;
-            if(week == 1) bg.style.background = "#fdf5e6";
-            else if(week == 2) bg.style.background = "#fff0f0";
-            else if(week == 3) bg.style.background = "#f0faff";
+            mainSwiper.update(); mainSwiper.slideTo(index, 0);
+            updateTheme(allMeals[index].week);
         }
 
-        function showMenu() {
-            document.getElementById('weekSelector').style.display = 'flex';
-            document.querySelector('.swiper').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
-        }
+        function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
+        function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        function rate(el, score) {
-            const stars = el.parentElement.querySelectorAll('.star');
-            stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active'));
-        }
-
-        // Snow Effect
+        // Snow Animation
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -240,11 +231,11 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.2 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.4; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
-            draw() { ctx.fillStyle = `rgba(0, 0, 0, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+            draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 50; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
