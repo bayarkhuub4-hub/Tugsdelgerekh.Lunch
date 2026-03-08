@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Үүрийн Шүүдэр - Premium Menu</title>
+    <title>Үүрийн Шүүдэр - Luxury Lunch App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@200;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -19,29 +19,21 @@
 
         /* 1. АРЫН ФОН */
         #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: 1s ease-in-out; background-color: #fdfaf5; background-image: radial-gradient(#d1c7bc 1px, transparent 1px); background-size: 25px 25px; }
-        #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; }
+        #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; transition: 1.5s ease; }
         @keyframes rotateAura { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         body.bg-w1 #bgMain { background-color: #fdf5e6; }
         body.bg-w2 #bgMain { background-color: #fff0f0; }
         body.bg-w3 #bgMain { background-color: #f0faff; }
 
-        /* 2. SPLASH SCREEN (ЯГ ТӨВД НЬ) */
-        #splash { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: #fff; z-index: 9999; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            text-align: center; transition: 0.8s ease; 
-        }
-        
-        .logo-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* SPLASH SCREEN */
+        #splash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: 0.8s ease; }
         .logo-img { width: 130px; opacity: 0; transform: scale(0.7); animation: logoIn 1s ease forwards; }
         @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
         .school-info { margin-top: 20px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* WEEK SELECTOR */
+        /* SELECTOR */
         #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 4000; background: rgba(255,255,255,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(40px); }
         .week-btn { width: 85%; max-width: 320px; padding: 25px; margin: 12px; background: #fff; border-radius: 25px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; font-family: 'Cinzel'; cursor: pointer; transition: 0.3s; font-weight: 900; }
 
@@ -49,35 +41,68 @@
         .swiper { width: 100%; height: 100vh; display: none; }
         .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
 
+        /* INTRO SLIDE ANIMATION */
         .intro-slide { justify-content: center !important; text-align: center; }
+        .intro-slide div { opacity: 0; transform: scale(0.8); transition: 0.8s ease; }
+        .swiper-slide-active.intro-slide div { opacity: 1; transform: scale(1); }
         .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
-        .intro-sub { font-size: 1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.3; margin-top: 10px; }
 
-        .slide-header { text-align: center; padding-top: 20px; z-index: 50; }
-        .w-num { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 8px; font-weight: 900; margin: 0; }
-        .d-name { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; opacity: 0.5; color: #333; }
-        .f-name { font-size: 1.1rem; font-weight: 800; margin-top: 20px; color: #222; max-width: 320px; line-height: 1.3; }
+        /* 🟢 HEADER ANIMATION (ЗАСВАР) */
+        .slide-header { 
+            text-align: center; padding-top: 20px; z-index: 50; 
+            opacity: 0; transform: translateY(-30px); 
+            transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+        }
+        .swiper-slide-active .slide-header { opacity: 1; transform: translateY(0); }
 
-        /* ХООЛНЫ ЗУРАГ (HAMGIIN NAANA) */
-        .food-wrap { position: relative; width: 100%; flex: 1; display: flex; justify-content: center; align-items: center; z-index: 150; margin-top: -20px; }
-        .food-img { width: 92vw; max-width: 460px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
+        .w-num { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 7px; font-weight: 900; margin: 0; }
+        .d-name { font-size: 0.95rem; letter-spacing: 4px; text-transform: uppercase; margin: 5px 0 15px 0; opacity: 0.6; color: #333; }
+        .f-name { font-size: 1.1rem; font-weight: 700; color: #222; max-width: 320px; line-height: 1.3; }
+
+        /* 🟢 ХООЛНЫ ЗУРАГ ANIMATION & POSITION (ДЭЭШЛҮҮЛСЭН) */
+        .food-wrap { 
+            position: relative; width: 100%; flex: 1; 
+            display: flex; justify-content: center; align-items: center;
+            z-index: 150; 
+            margin-top: -60px; /* Илүү дээшлүүлсэн */
+            opacity: 0; transform: scale(0.8); 
+            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+        }
+        .swiper-slide-active .food-wrap { opacity: 1; transform: scale(1); }
+        .food-img { width: 90vw; max-width: 440px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12)); animation: float 6s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        .cal-badge { position: absolute; right: 5%; bottom: 15%; z-index: 200; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 6px 15px; background: rgba(255,255,255,0.9); border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        /* CALORIE BADGE */
+        .cal-badge { 
+            position: absolute; right: 5%; bottom: 15%; z-index: 200; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 6px 15px; 
+            background: rgba(255,255,255,0.9); border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee;
+            opacity: 0; transform: translateX(20px); 
+            transition: 0.6s ease 0.8s;
+        }
+        .swiper-slide-active .cal-badge { opacity: 1; transform: translateX(0); }
 
-        /* GLASS PANEL (AR TALRUUNA) */
-        .glass-panel { width: 95%; max-width: 420px; padding: 20px; background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 35px; margin-top: -70px; z-index: 10; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin-bottom: 45px; }
-        .n-row { display: flex; gap: 6px; margin-bottom: 20px; }
+        /* 🟢 GLASS PANEL ANIMATION (ЗАСВАР) */
+        .glass-panel { 
+            width: 95%; max-width: 420px; padding: 20px; 
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+            border: 1px solid var(--border); border-radius: 35px; 
+            margin-top: -75px; z-index: 10; text-align: center; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin-bottom: 45px; 
+            opacity: 0; transform: translateY(40px); 
+            transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.6s;
+        }
+        .swiper-slide-active .glass-panel { opacity: 1; transform: translateY(0); }
+
+        .n-row { display: flex; gap: 6px; margin-bottom: 15px; }
         .n-box { flex: 1; background: #fff; padding: 10px 2px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .n-box b { display: block; font-size: 0.85rem; color: #333; }
         .n-box i { font-style: normal; font-size: 0.5rem; text-transform: uppercase; font-weight: 700; opacity: 0.4; }
 
-        /* ҮНЭЛГЭЭ & СЭТГЭГДЭЛ */
         .star-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
         .star { font-size: 2.2rem; color: rgba(0,0,0,0.08); cursor: pointer; transition: 0.3s; }
         .comment-box { width: 100%; background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 12px 15px; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; margin-bottom: 10px; }
-
         .send-btn { background: #fff; border: none; padding: 10px 25px; border-radius: 50px; font-size: 0.75rem; font-weight: 800; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+
         #customToast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 15px 30px; border-radius: 50px; z-index: 9999; font-size: 0.9rem; font-weight: 600; display: none; backdrop-filter: blur(10px); animation: toastFade 0.5s ease; }
         @keyframes toastFade { from { opacity: 0; scale: 0.8; } to { opacity: 1; scale: 1; } }
 
@@ -95,7 +120,6 @@
     <canvas id="canvas-snow"></canvas>
     <div id="customToast">Хүлээн авлаа. Баярлалаа!</div>
 
-    <!-- 1. SPLASH SCREEN (ЯГ ТӨВД НЬ) -->
     <div id="splash">
         <div class="logo-container">
             <img src="logo.png" class="logo-img">
@@ -106,7 +130,6 @@
         </div>
     </div>
 
-    <!-- 2. WEEK SELECTOR -->
     <div id="weekSelector">
         <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:5px; color: #333;">ЦЭС СОНГОХ</h2>
         <div class="week-btn" style="border-top: 5px solid #d4af37; color: #d4af37;" onclick="jumpTo(0)"><h3>WEEK 1</h3><small>1-р долоо хоног</small></div>
@@ -123,7 +146,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // --- ⚡ ХУРДАН SPLASH LOGIC (Ямар ч нөхцөл хүлээхгүй) ---
+        // Splash handling
         setTimeout(function() {
             const splash = document.getElementById('splash');
             if (splash) {
@@ -133,7 +156,7 @@
                     document.getElementById('weekSelector').style.display = 'flex';
                 }, 800);
             }
-        }, 1800); // 1.8 секунд болоод лого шууд арилна
+        }, 1800);
 
         const allMeals = [
             { week: 1, type: 'intro' },
@@ -160,12 +183,11 @@
         let introTimer;
         let userRatings = {};
 
-        // App HTML бүтэц үүсгэх
         function initApp() {
             const wrapper = document.getElementById('swiperWrapper');
             allMeals.forEach((m, idx) => {
                 if(m.type === 'intro') {
-                    wrapper.innerHTML += `<div class="swiper-slide intro-slide" data-week="${m.week}"><div class="intro-content"><h1 class="intro-num">WEEK ${m.week}</h1><div class="intro-sub">ЭХЭЛЖ БАЙНА</div></div></div>`;
+                    wrapper.innerHTML += `<div class="swiper-slide intro-slide" data-week="${m.week}"><div><h1 class="intro-num">WEEK ${m.week}</h1><div class="intro-sub">ЭХЭЛЖ БАЙНА</div></div></div>`;
                 } else {
                     wrapper.innerHTML += `
                     <div class="swiper-slide" data-week="${m.week}">
@@ -178,13 +200,8 @@
                                 <div class="n-box"><b>${m.c}</b><i>Нүүрс</i></div>
                                 <div class="n-box"><b>${m.fi}</b><i>Эслэг</i></div>
                             </div>
-                            <div style="margin-top:10px; font-size:0.6rem; opacity:0.5; font-weight:800; text-transform:uppercase;">Үнэлгээ өгөх</div>
                             <div class="star-row">
-                                <span class="star" onclick="rate(this, ${idx}, 1)">★</span>
-                                <span class="star" onclick="rate(this, ${idx}, 2)">★</span>
-                                <span class="star" onclick="rate(this, ${idx}, 3)">★</span>
-                                <span class="star" onclick="rate(this, ${idx}, 4)">★</span>
-                                <span class="star" onclick="rate(this, ${idx}, 5)">★</span>
+                                <span class="star" onclick="rate(this, ${idx}, 1)">★</span><span class="star" onclick="rate(this, ${idx}, 2)">★</span><span class="star" onclick="rate(this, ${idx}, 3)">★</span><span class="star" onclick="rate(this, ${idx}, 4)">★</span><span class="star" onclick="rate(this, ${idx}, 5)">★</span>
                             </div>
                             <textarea id="comment-${idx}" class="comment-box" placeholder="Сэтгэгдэл бичих..."></textarea>
                             <button class="send-btn" onclick="submitData(${idx})">ИЛГЭЭХ</button>
@@ -204,6 +221,7 @@
                         const week = activeSlide.getAttribute('data-week');
                         document.body.className = 'bg-w' + week;
                         updateAura(week);
+                        
                         clearTimeout(introTimer);
                         if (activeSlide.classList.contains('intro-slide')) {
                             introTimer = setTimeout(() => { mainSwiper.slideNext(); }, 3000);
@@ -226,10 +244,7 @@
             if(score === 0) { showToast("Та од дарж үнэлнэ үү"); return; }
             showToast("Хүлээн авлаа. Баярлалаа!");
             const scriptURL = 'https://script.google.com/macros/s/AKfycbyfcTDDujkQeVOkChIMm2PDyCgQnqL5CWUcTb3k0c3yjz_NWkWYFV_UUIMYIhiEvLAuSQ/exec'; 
-            const data = { week: meal.week, day: meal.day, meal: meal.name, score: score, comment: comment };
-            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
-            .then(() => { document.getElementById(`comment-${mealIdx}`).value = ""; })
-            .catch(() => console.log("Error"));
+            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ week: meal.week, day: meal.day, meal: meal.name, score: score, comment: comment }) });
         }
 
         function showToast(msg) {
@@ -248,13 +263,10 @@
 
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
-            const swiperEl = document.querySelector('.swiper');
-            swiperEl.style.display = 'block';
+            document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            
             if(!mainSwiper) setupSwiper();
-            mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
             
             const activeSlide = mainSwiper.slides[index];
@@ -266,7 +278,7 @@
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
 
-        // Snow
+        // Snow effect
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
