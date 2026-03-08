@@ -9,133 +9,110 @@
     <style>
         :root {
             --w1: #d4af37; --w2: #e63946; --w3: #4fc3f7;
-            --glass: rgba(255, 255, 255, 0.5);
-            --border: rgba(255, 255, 255, 0.7);
+            --glass: rgba(255, 255, 255, 0.4);
+            --border: rgba(255, 255, 255, 0.6);
         }
 
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            font-family: 'Montserrat', sans-serif; background: #fdfaf5; 
-            overflow: hidden; 
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; overflow: hidden; }
 
-        /* 1. ХАРАГДАХУЙЦ ТАНСАГ ФОН (Dot Grid + Mesh Glow) */
-        #bgMain {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background-color: #fdfaf5;
-            background-image: radial-gradient(#d1c7bc 1px, transparent 1px);
-            background-size: 25px 25px; /* Илүү тод цэгэн хээ */
-        }
-
-        .mesh-aura {
-            position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%;
-            background: radial-gradient(circle, var(--w1) 0%, transparent 60%);
-            filter: blur(80px); opacity: 0.15;
-            animation: rotateAura 20s infinite linear;
-            z-index: -1; transition: 1.5s ease;
-        }
+        /* 1. АРЫН ФОН - ТОД ӨНГӨНИЙ ЯЛГАА */
+        #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: 1.2s ease-in-out; background: #080c14; }
+        #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; transition: 1.5s ease; }
         @keyframes rotateAura { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 2. SPLASH SCREEN (Centered) */
-        #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; z-index: 3000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: 0.8s ease;
-        }
-        .logo-container { text-align: center; }
-        .logo-img { width: 130px; margin-bottom: 25px; animation: scaleIn 1s ease-out; }
-        @keyframes scaleIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        body.bg-w1 #bgMain { background: radial-gradient(circle at center, #3d2b1f 0%, #050505 100%); }
+        body.bg-w2 #bgMain { background: radial-gradient(circle at center, #4d1212 0%, #050505 100%); }
+        body.bg-w3 #bgMain { background: radial-gradient(circle at center, #1a3a4d 0%, #050505 100%); }
 
-        /* WEEK SELECTOR */
-        #weekSelector {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2500; background: rgba(255,255,255,0.9);
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(30px);
-        }
-        .week-btn {
-            width: 85%; max-width: 320px; padding: 25px; margin: 12px;
-            background: #fff; border-radius: 25px; border: 1px solid #eee;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center;
-            font-family: 'Cinzel'; cursor: pointer; transition: 0.3s;
-        }
+        /* SPLASH & SELECTOR */
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
+        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2500; background: rgba(255,255,255,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(40px); }
+        .week-btn { width: 85%; max-width: 320px; padding: 25px; margin: 12px; background: #fff; border-radius: 25px; border: 1px solid #eee; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; font-family: 'Cinzel'; cursor: pointer; transition: 0.3s; }
 
-        /* 3. SLIDE CONTENT & ANIMATIONS */
+        /* SWIPER LAYOUT */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; }
 
-        /* Header Animation */
-        .slide-header { text-align: center; padding-top: 30px; opacity: 0; transform: translateY(-30px); transition: 0.8s ease; }
-        .swiper-slide-active .slide-header { opacity: 1; transform: translateY(0); }
+        /* INTRO SLIDE - ЯГ ГОЛД НЬ */
+        .intro-slide { justify-content: center !important; text-align: center; }
+        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
+        .intro-sub { font-size: 1.1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.4; margin-top: 10px; }
 
+        /* HEADER */
+        .slide-header { text-align: center; padding-top: 30px; z-index: 50; }
         .w-num { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 8px; font-weight: 900; margin: 0; }
-        .d-name { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; opacity: 0.5; }
-        .f-name { font-size: 1.1rem; font-weight: 800; margin-top: 20px; color: #222; max-width: 320px; line-height: 1.3; }
+        .d-name { font-size: 0.95rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; opacity: 0.6; color: #fff; }
+        .f-name { font-size: 1.1rem; font-weight: 700; margin-top: 20px; color: #fff; max-width: 320px; line-height: 1.3; text-shadow: 0 2px 10px #000; }
 
-        /* Food Image Animation */
-        .food-container { flex: 1; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.8); transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s; }
-        .swiper-slide-active .food-container { opacity: 1; transform: scale(1); }
-        .food-img { width: 88vw; max-width: 440px; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        /* 2. ХООЛНЫ ЗУРАГ (HAMGIIN NAANA) */
+        .food-container { 
+            position: relative; width: 100%; flex: 1; 
+            display: flex; justify-content: center; align-items: center;
+            z-index: 150; /* Картнаас дээгүүр харагдана */
+            margin-top: -20px;
+        }
+        .img-wrapper { position: relative; overflow: hidden; border-radius: 50%; }
+        .food-img { width: 88vw; max-width: 440px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* Unified Glass Panel Animation */
+        /* Гэрэл гүйх эффект */
+        .img-wrapper::after {
+            content: ''; position: absolute; top: -50%; left: -150%; width: 50%; height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: rotate(30deg); animation: glint 4s infinite ease-in-out;
+        }
+        @keyframes glint { 0% { left: -150%; } 50%, 100% { left: 150%; } }
+
+        /* 3. ШИЛЭН КАРТ (AR TALRUUNA) */
         .glass-panel {
             width: 95%; max-width: 420px; padding: 20px;
             background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border); border-radius: 35px;
-            margin-top: -60px; z-index: 100; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            margin-top: -80px; /* Зурагны доор орох зай */
+            z-index: 10; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             margin-bottom: 45px;
-            opacity: 0; transform: translateY(50px); transition: 0.8s ease 0.5s;
         }
-        .swiper-slide-active .glass-panel { opacity: 1; transform: translateY(0); }
 
-        /* Nutrition Styling */
         .cal-text { font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px; display: block; }
-        .n-row { display: flex; gap: 8px; margin-bottom: 20px; }
-        .n-box { flex: 1; background: #fff; padding: 12px 2px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .n-row { display: flex; gap: 8px; margin-bottom: 15px; }
+        .n-box { flex: 1; background: #fff; padding: 10px 2px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .n-box b { display: block; font-size: 0.85rem; color: #333; }
         .n-box i { font-style: normal; font-size: 0.5rem; text-transform: uppercase; font-weight: 700; opacity: 0.4; }
 
-        /* Rating & Comment */
-        .star-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .star-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
         .star { font-size: 2rem; color: rgba(0,0,0,0.08); cursor: pointer; transition: 0.3s; }
         .comment-box { width: 100%; background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 12px 15px; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
 
-        /* INTRO SLIDE */
-        .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
-        .intro-sub { font-size: 1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.3; }
-
         /* COLORS */
-        body.bg-w1 .w-num, body.bg-w1 .intro-num, body.bg-w1 .cal-text, body.bg-w1 .star.active { color: #d4af37; }
-        body.bg-w2 .w-num, body.bg-w2 .intro-num, body.bg-w2 .cal-text, body.bg-w2 .star.active { color: #e63946; }
-        body.bg-w3 .w-num, body.bg-w3 .intro-num, body.bg-w3 .cal-text, body.bg-w3 .star.active { color: #4fc3f7; }
+        body.bg-w1 .w-num, body.bg-w1 .intro-num, body.bg-w1 .cal-text, body.bg-w1 .star.active { color: var(--w1); }
+        body.bg-w2 .w-num, body.bg-w2 .intro-num, body.bg-w2 .cal-text, body.bg-w2 .star.active { color: var(--w2); }
+        body.bg-w3 .w-num, body.bg-w3 .intro-num, body.bg-w3 .cal-text, body.bg-w3 .star.active { color: var(--w3); }
 
         #backBtn { position: fixed; top: 20px; left: 20px; z-index: 2600; background: #fff; border: none; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; font-size: 1.2rem; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 150; pointer-events: none; opacity: 0.3; }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0.3; }
     </style>
 </head>
 <body class="bg-w1">
 
-    <div id="bgMain"><div id="aura" class="mesh-aura"></div></div>
+    <div id="bgMain"><div id="aura"></div></div>
     <canvas id="canvas-snow"></canvas>
 
     <!-- Splash Screen -->
     <div id="splash">
-        <div class="logo-container">
-            <img src="logo.png" class="logo-img">
-            <div style="font-family:'Cinzel'; color:#333; font-size: 1.1rem; letter-spacing: 2px;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ</div>
+        <div style="text-align: center;">
+            <img src="logo.png" style="width:130px; animation: scaleIn 1s ease-out;">
+            <div style="font-family:'Cinzel'; color:#333; font-size: 1.1rem; letter-spacing: 2px; margin-top: 20px;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ</div>
             <div style="font-size:0.7rem; letter-spacing:4px; opacity:0.4; font-weight:800; margin-top: 5px;">ҮДИЙН ХООЛНЫ ЦЭС</div>
         </div>
     </div>
 
-    <!-- Selector -->
+    <!-- Week Selector -->
     <div id="weekSelector">
         <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:5px;">ЦЭС СОНГОХ</h2>
-        <div class="week-btn" style="border-top: 5px solid #d4af37;" onclick="jumpTo(0)"><h3>WEEK 1</h3><small>1-р долоо хоног</small></div>
-        <div class="week-btn" style="border-top: 5px solid #e63946;" onclick="jumpTo(6)"><h3>WEEK 2</h3><small>2-р долоо хоног</small></div>
-        <div class="week-btn" style="border-top: 5px solid #4fc3f7;" onclick="jumpTo(12)"><h3>WEEK 3</h3><small>3-р долоо хоног</small></div>
+        <div class="week-btn" style="border-top: 5px solid #d4af37; color: #d4af37;" onclick="jumpTo(0)"><h3>WEEK 1</h3><small>1-р долоо хоног</small></div>
+        <div class="week-btn" style="border-top: 5px solid #e63946; color: #e63946;" onclick="jumpTo(6)"><h3>WEEK 2</h3><small>2-р долоо хоног</small></div>
+        <div class="week-btn" style="border-top: 5px solid #4fc3f7; color: #4fc3f7;" onclick="jumpTo(12)"><h3>WEEK 3</h3><small>3-р долоо хоног</small></div>
     </div>
 
     <button id="backBtn" onclick="showMenu()">←</button>
@@ -169,7 +146,7 @@
         ];
 
         let mainSwiper;
-        const aura = document.getElementById('aura');
+        let introTimeout;
 
         window.onload = () => {
             setTimeout(() => {
@@ -192,7 +169,11 @@
                             <div class="d-name">${m.day}</div>
                             <div class="f-name">${m.name}</div>
                         </div>
-                        <div class="food-container"><img src="${m.img}" class="food-img" onerror="this.style.opacity='0.1'"></div>
+                        <div class="food-container">
+                            <div class="img-wrapper">
+                                <img src="${m.img}" class="food-img" onerror="this.style.opacity='0.1'">
+                            </div>
+                        </div>
                         <div class="glass-panel">
                             <span class="cal-text">${m.cal} KCAL</span>
                             <div class="n-row">
@@ -201,7 +182,7 @@
                                 <div class="n-box"><b>${m.c}</b><i>Нүүрс</i></div>
                                 <div class="n-box"><b>${m.fi}</b><i>Эслэг</i></div>
                             </div>
-                            <div style="margin-top:15px; font-size:0.6rem; opacity:0.5; font-weight:800; text-transform:uppercase;">Үнэлгээ өгөх</div>
+                            <div style="margin-top:10px; font-size:0.6rem; opacity:0.5; font-weight:800; text-transform:uppercase;">Үнэлгээ өгөх</div>
                             <div class="star-row">
                                 <span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span>
                             </div>
@@ -220,10 +201,11 @@
                         document.body.className = 'bg-w' + week;
                         updateAura(week);
                         
-                        // AUTO-ADVANCE FOR INTRO
+                        // АВТОМАТ ШИЛЖИЛТ (3 сек)
+                        clearTimeout(introTimeout);
                         if (activeSlide.classList.contains('intro-slide')) {
-                            setTimeout(() => {
-                                if (mainSwiper.activeIndex === Array.from(mainSwiper.slides).indexOf(activeSlide)) mainSwiper.slideNext();
+                            introTimeout = setTimeout(() => {
+                                mainSwiper.slideNext();
                             }, 3000);
                         }
                     }
@@ -235,7 +217,7 @@
             let color = "#d4af37";
             if(week == 2) color = "#e63946";
             if(week == 3) color = "#4fc3f7";
-            aura.style.background = `radial-gradient(circle, ${color} 0%, transparent 60%)`;
+            document.getElementById('aura').style.background = `radial-gradient(circle, ${color} 0%, transparent 60%)`;
         }
 
         function jumpTo(index) {
@@ -243,7 +225,16 @@
             document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            mainSwiper.update(); mainSwiper.slideTo(index, 0);
+            mainSwiper.update(); 
+            mainSwiper.slideTo(index, 0);
+            
+            // Слайд 0 буюу Intro бол шууд таймерыг ажиллуулна
+            if (allMeals[index].type === 'intro') {
+                clearTimeout(introTimeout);
+                introTimeout = setTimeout(() => {
+                    mainSwiper.slideNext();
+                }, 3000);
+            }
         }
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
