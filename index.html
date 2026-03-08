@@ -10,110 +10,112 @@
         :root {
             --w1: #d4af37; /* Gold */
             --w2: #ff4d4d; /* Red */
-            --w3: #00d2ff; /* Sky Blue */
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --w3: #4fc3f7; /* Light Blue */
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #1a1c23; color: white; overflow: hidden; }
 
-        /* 1. ХӨДӨЛГӨӨНТЭЙ БАРААН ФОН (Premium Dark Mesh) */
+        /* 1. АРЫН ФОН - ТАС ХАР БИШ, ТАНСАГ ГҮН СААРАЛ + ХӨДӨЛГӨӨНТЭЙ АУРА */
         #bgContainer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            transition: 1.5s ease-in-out;
-            background: #080808;
+            background: #1a1c23; transition: 1.2s ease-in-out;
         }
 
-        /* Долоо хоногоор солигдох зөөлөн хөдөлгөөнтэй гэрэл */
-        .bg-glow {
-            position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%;
-            filter: blur(100px); opacity: 0.15; z-index: -1;
-            animation: moveGlow 20s infinite alternate;
-            transition: 1.5s ease;
+        .aura {
+            position: absolute; width: 120vw; height: 120vw; top: -10%; left: -10%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px); animation: auraMove 15s infinite alternate; transition: 1.5s ease;
         }
-        @keyframes moveGlow { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(15%, 15%) rotate(30deg); } }
+        @keyframes auraMove { from { transform: translate(0, 0); } to { transform: translate(10%, 10%); } }
+
+        /* Долоо хоногийн өнгөнүүд - Body класс дээр суурилна */
+        body.bg-w1 #bgContainer { background: #1f1a10; }
+        body.bg-w1 .aura { background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 70%); }
+        
+        body.bg-w2 #bgContainer { background: #231212; }
+        body.bg-w2 .aura { background: radial-gradient(circle, rgba(255, 77, 77, 0.2) 0%, rgba(0,0,0,0) 70%); }
+
+        body.bg-w3 #bgContainer { background: #101a23; }
+        body.bg-w3 .aura { background: radial-gradient(circle, rgba(79, 195, 247, 0.2) 0%, rgba(0,0,0,0) 70%); }
 
         /* SPLASH & SELECTOR */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s ease; }
-        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(20px); }
+        #weekSelector { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(30px); }
         .week-opt { width: 80%; max-width: 320px; padding: 22px; margin: 12px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; font-family: 'Cinzel'; text-align: center; cursor: pointer; transition: 0.4s; font-size: 1.1rem; letter-spacing: 2px; }
 
-        /* HEADER AREA */
-        .header { width: 100%; text-align: center; padding-top: 35px; z-index: 100; }
-        .week-label { font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 8px; font-weight: 900; }
-        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 5px; margin-top: 5px; opacity: 0.6; }
-        .m-name { font-size: 1rem; font-weight: 500; padding: 0 40px; line-height: 1.4; color: #fff; text-align: center; margin-top: 15px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-
-        /* SWIPER */
+        /* SWIPER SLIDES */
         .swiper { width: 100%; height: 100vh; display: none; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px; box-sizing: border-box; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; box-sizing: border-box; }
 
-        /* FOOD VISUALS (ДЭЭШЛҮҮЛСЭН) */
-        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -40px; }
-        .food-img { width: 88vw; max-width: 420px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
+        /* INTRO SLIDE - AUTO ADVANCE */
+        .week-intro { text-align: center; margin-top: auto; margin-bottom: auto; }
+        .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
+        .intro-text { font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; margin-top: 10px; font-weight: bold; }
+
+        /* HEADER & MEAL NAME */
+        .header { width: 100%; text-align: center; padding-top: 30px; }
+        .week-label { font-family: 'Cinzel'; font-size: 1.3rem; letter-spacing: 8px; font-weight: 900; }
+        .day-label { font-size: 1.1rem; font-weight: 200; text-transform: uppercase; letter-spacing: 5px; margin-top: 5px; opacity: 0.6; }
+        .m-name { font-size: 1.1rem; font-weight: 600; padding: 0 40px; line-height: 1.4; color: #fff; text-align: center; margin-top: 25px; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+
+        /* FOOD VISUALS (BIGGER & HIGHER) */
+        .food-wrap { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin-top: -60px; }
+        .food-img { width: 92vw; max-width: 450px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)); animation: float 6s infinite ease-in-out; z-index: 5; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* 2. ШИЛЭН ТУНГАЛАГ ХЭСЭГ (Glassmorphism) */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            width: 100%; box-sizing: border-box;
+        /* SHIM TEEJEEEL (GLASS OVERLAY) */
+        .info-panel { 
+            width: 94%; max-width: 420px; z-index: 20; margin-top: -65px; padding: 20px; 
+            background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
         }
+        .cal-badge { font-size: 0.85rem; font-weight: 800; letter-spacing: 2px; padding: 6px 20px; background: rgba(0,0,0,0.6); border-radius: 50px; border: 1px solid var(--glass-border); margin-bottom: 15px; display: inline-block; }
+        .nutri-bar { display: flex; gap: 8px; width: 100%; }
+        .n-card { flex: 1; text-align: center; }
+        .n-v { font-size: 1rem; font-weight: 800; color: #fff; display: block; }
+        .n-l { font-size: 0.55rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 4px; }
 
-        /* NUTRITION & CALORIE OVERLAY */
-        .info-panel { width: 94%; max-width: 420px; z-index: 20; margin-top: -55px; padding: 15px; }
-        .cal-badge { font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; padding: 6px 20px; background: rgba(0,0,0,0.6); border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 12px; display: inline-block; }
-        .nutri-bar { display: flex; gap: 6px; width: 100%; }
-        .n-card { flex: 1; text-align: center; padding: 8px 0; }
-        .n-v { font-size: 0.9rem; font-weight: 800; color: #fff; display: block; }
-        .n-l { font-size: 0.5rem; text-transform: uppercase; font-weight: 700; display: block; margin-top: 3px; }
-
-        /* BOTTOM UI (RATING) */
+        /* RATING & COMMENT (GLASS & RAISED) */
         .bottom-ui { 
-            width: 94%; max-width: 440px; padding: 20px; 
-            text-align: center; margin-bottom: 50px; z-index: 100;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 94%; max-width: 440px; padding: 22px; 
+            background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            text-align: center; margin-bottom: 60px; z-index: 100;
         }
-        .stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .star { font-size: 1.8rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
-        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.8rem; resize: none; outline: none; box-sizing: border-box; height: 50px; }
+        .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .star { font-size: 2rem; color: rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .comment { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; color: white; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
 
-        /* INTRO SLIDE */
-        .week-intro { text-align: center; margin-top: auto; margin-bottom: auto; }
-        .intro-num { font-family: 'Cinzel'; font-size: 4rem; font-weight: 900; margin: 0; }
-        .intro-text { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-top: 10px; }
+        /* THEME COLOR APPLICATIONS */
+        body.bg-w1 .week-label, body.bg-w1 .n-l, body.bg-w1 .cal-badge, body.bg-w1 .intro-num { color: var(--w1); }
+        body.bg-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
+        
+        body.bg-w2 .week-label, body.bg-w2 .n-l, body.bg-w2 .cal-badge, body.bg-w2 .intro-num { color: var(--w2); }
+        body.bg-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
 
-        /* THEME COLOR INJECTION */
-        .slide-w1 .week-label, .slide-w1 .n-l, .slide-w1 .cal-badge, .slide-w1 .intro-num { color: var(--w1); }
-        .slide-w1 .star.active { color: var(--w1); text-shadow: 0 0 15px var(--w1); }
-        .slide-w2 .week-label, .slide-w2 .n-l, .slide-w2 .cal-badge, .slide-w2 .intro-num { color: var(--w2); }
-        .slide-w2 .star.active { color: var(--w2); text-shadow: 0 0 15px var(--w2); }
-        .slide-w3 .week-label, .slide-w3 .n-l, .slide-w3 .cal-badge, .slide-w3 .intro-num { color: var(--w3); }
-        .slide-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
+        body.bg-w3 .week-label, body.bg-w3 .n-l, body.bg-w3 .cal-badge, body.bg-w3 .intro-num { color: var(--w3); }
+        body.bg-w3 .star.active { color: var(--w3); text-shadow: 0 0 15px var(--w3); }
 
-        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; }
-        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        .menu-btn { position: fixed; top: 25px; left: 20px; z-index: 2500; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        #canvas-snow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200; pointer-events: none; opacity: 0.4; }
     </style>
 </head>
-<body>
+<body class="bg-w1">
 
-    <div id="bgContainer">
-        <div id="glow" class="bg-glow"></div>
-    </div>
+    <div id="bgContainer"><div class="aura"></div></div>
     <canvas id="canvas-snow"></canvas>
 
     <!-- Splash Screen -->
     <div id="splash">
         <img src="logo.png" style="width:110px; margin-bottom: 20px;">
-        <div style="font-family:'Cinzel'; text-align:center; color: white;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.7rem; opacity:0.6; font-family:'Montserrat';">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
+        <div style="font-family:'Cinzel'; text-align:center; color: white;">ТӨГСДЭЛГЭРЭХ СУРГУУЛЬ <br><span style="font-size:0.7rem; opacity:0.6; font-family:'Montserrat'; letter-spacing:2px;">ҮДИЙН ХООЛНЫ ЦЭС</span></div>
     </div>
 
     <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:30px;">ЦЭС СОНГОХ</h2>
+        <h2 style="font-family:'Cinzel'; letter-spacing:5px; margin-bottom:40px; color:white;">ЦЭС СОНГОХ</h2>
         <div class="week-opt" style="color:var(--w1); border-color:var(--w1);" onclick="jumpTo(0)">1-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt" style="color:var(--w2); border-color:var(--w2);" onclick="jumpTo(6)">2-Р ДОЛОО ХОНОГ</div>
         <div class="week-opt" style="color:var(--w3); border-color:var(--w3);" onclick="jumpTo(12)">3-Р ДОЛОО ХОНОГ</div>
@@ -136,22 +138,20 @@
             { week: 1, day: "Пүрэв", name: "Ногоон сонгинотой хар шөл, пирожки", cal: "664", p: "31г", f: "17г", c: "100г", fi: "7г", img: "thu1.png" },
             { week: 1, day: "Баасан", name: "Хөц будаатай шөл, мантууны хавчуурга", cal: "802", p: "33г", f: "23г", c: "119г", fi: "9г", img: "fri1.png" },
             { week: 2, type: 'intro' },
-            { week: 2, day: "Даваа", name: "Өдрийн хоол - 2.1", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
-            { week: 2, day: "Мягмар", name: "Өдрийн хоол - 2.2", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
-            { week: 2, day: "Лхагва", name: "Өдрийн хоол - 2.3", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
-            { week: 2, day: "Пүрэв", name: "Өдрийн хоол - 2.4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
-            { week: 2, day: "Баасан", name: "Өдрийн хоол - 2.5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
+            { week: 2, day: "Даваа", name: "2-р долоо хоногийн хоол", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "mon2.png" },
+            { week: 2, day: "Мягмар", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "tue2.png" },
+            { week: 2, day: "Лхагва", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "wed2.png" },
+            { week: 2, day: "Пүрэв", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
+            { week: 2, day: "Баасан", name: "Хоолны нэр энд", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "Өдрийн хоол - 3.1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "Өдрийн хоол - 3.2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "Өдрийн хоол - 3.3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "Өдрийн хоол - 3.4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "Өдрийн хоол - 3.5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "3-р долоо хоногийн хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "Хоолны нэр энд", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
         ];
 
         let mainSwiper;
-        const bg = document.getElementById('bgContainer');
-        const glow = document.getElementById('glow');
 
         window.onload = () => {
             setTimeout(() => {
@@ -173,7 +173,7 @@
                         <div class="header"><div class="week-label">WEEK ${m.week}</div><div class="day-label">${m.day}</div></div>
                         <div class="m-name">${m.name}</div>
                         <div class="food-wrap"><img src="${m.img}" class="food-img" loading="eager" onerror="this.style.opacity='0.2'"></div>
-                        <div class="glass-panel info-panel">
+                        <div class="info-panel">
                             <div class="cal-badge">${m.cal} KCAL</div>
                             <div class="nutri-bar">
                                 <div class="n-card"><span class="n-v">${m.p}</span><span class="n-l">Уураг</span></div>
@@ -182,7 +182,7 @@
                                 <div class="n-card"><span class="n-v">${m.fi}</span><span class="n-l">Эслэг</span></div>
                             </div>
                         </div>
-                        <div class="glass-panel bottom-ui">
+                        <div class="bottom-ui">
                             <div class="stars"><span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span></div>
                             <textarea class="comment" placeholder="Сэтгэгдэл үлдээх..."></textarea>
                         </div>
@@ -196,28 +196,26 @@
                     slideChange: function () {
                         const activeSlide = this.slides[this.activeIndex];
                         const week = activeSlide.getAttribute('data-week');
-                        updateTheme(week);
+                        document.body.className = 'bg-w' + week;
+                        
                         if (activeSlide.classList.contains('intro-slide')) {
-                            setTimeout(() => { if (mainSwiper.activeIndex === Array.from(mainSwiper.slides).indexOf(activeSlide)) mainSwiper.slideNext(); }, 3000);
+                            setTimeout(() => {
+                                if (mainSwiper.activeIndex === Array.from(mainSwiper.slides).indexOf(activeSlide)) mainSwiper.slideNext();
+                            }, 3000);
                         }
                     }
                 }
             });
         };
 
-        function updateTheme(week) {
-            if(week == 1) { glow.style.background = "radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
-            else if(week == 2) { glow.style.background = "radial-gradient(circle, rgba(230, 57, 70, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
-            else if(week == 3) { glow.style.background = "radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, rgba(0,0,0,0) 70%)"; }
-        }
-
         function jumpTo(index) {
             document.getElementById('weekSelector').style.display = 'none';
             document.querySelector('.swiper').style.display = 'block';
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('bgMusic').play().catch(() => {});
-            mainSwiper.update(); mainSwiper.slideTo(index, 0);
-            updateTheme(allMeals[index].week);
+            mainSwiper.update(); 
+            mainSwiper.slideTo(index, 0);
+            document.body.className = 'bg-w' + allMeals[index].week;
         }
 
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
@@ -231,11 +229,11 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.2 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.4; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 2 + 1; this.speed = Math.random() * 0.8 + 0.3; this.opacity = Math.random() * 0.5 + 0.2; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Snowflake());
+        for (let i = 0; i < 80; i++) particles.push(new Snowflake());
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
