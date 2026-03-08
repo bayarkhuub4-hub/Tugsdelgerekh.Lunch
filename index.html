@@ -10,12 +10,12 @@
         :root {
             --w1: #d4af37; --w2: #e63946; --w3: #4fc3f7;
             --glass: rgba(255, 255, 255, 0.4);
-            --border: rgba(255, 255, 255, 0.7);
+            --border: rgba(255, 255, 255, 0.6);
         }
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #fdfaf5; overflow: hidden; }
 
-        /* 1. ХАРАГДАХУЙЦ ТАНСАГ ФОН */
+        /* 1. АРЫН ФОН */
         #bgMain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #fdfaf5; background-image: radial-gradient(#d1c7bc 1px, transparent 1px); background-size: 25px 25px; transition: 1s ease; }
         #aura { position: absolute; width: 150vw; height: 150vw; top: -25%; left: -25%; filter: blur(80px); opacity: 0.15; animation: rotateAura 20s infinite linear; z-index: -1; }
         @keyframes rotateAura { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -34,7 +34,7 @@
         .intro-num { font-family: 'Cinzel'; font-size: 4.5rem; font-weight: 900; margin: 0; }
         .intro-sub { font-size: 1rem; letter-spacing: 5px; font-weight: 800; opacity: 0.3; margin-top: 10px; }
 
-        /* HEADER ANIMATION */
+        /* SLIDE HEADER */
         .slide-header { 
             text-align: center; padding-top: 20px; z-index: 50; 
             opacity: 0; transform: translateY(-20px); transition: 0.8s ease 0.2s;
@@ -49,7 +49,7 @@
         .food-wrap { 
             position: relative; width: 100%; flex: 1; 
             display: flex; justify-content: center; align-items: center;
-            z-index: 150; margin-top: -30px; /* Илүү дээшээ өргөсөн */
+            z-index: 150; margin-top: -30px; 
             opacity: 0; transform: scale(0.85); transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
         }
         .swiper-slide-active .food-wrap { opacity: 1; transform: scale(1); }
@@ -58,7 +58,7 @@
         .food-img { width: 90vw; max-width: 440px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15)); animation: float 6s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-        /* CALORIE BADGE - ЗУРАГ ДЭЭР ДАВХЦАХ */
+        /* CALORIE BADGE */
         .cal-badge { 
             position: absolute; right: 5%; bottom: 15%; z-index: 200;
             font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 6px 15px; 
@@ -85,9 +85,34 @@
         .n-box b { display: block; font-size: 0.85rem; color: #333; }
         .n-box i { font-style: normal; font-size: 0.5rem; text-transform: uppercase; font-weight: 700; opacity: 0.4; }
 
-        .star-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        /* ҮНЭЛГЭЭ & СЭТГЭГДЭЛ */
+        .rating-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .rating-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: #333; opacity: 0.6; }
+        
+        .star-row { display: flex; gap: 6px; }
         .star { font-size: 2rem; color: rgba(0,0,0,0.08); cursor: pointer; transition: 0.3s; }
-        .comment-input { width: 100%; background: #fff; border: 1px solid #eee; border-radius: 20px; padding: 10px 15px; font-family: 'Montserrat'; font-size: 0.85rem; resize: none; outline: none; box-sizing: border-box; height: 55px; }
+        
+        /* Сэтгэгдэл хүрээгүй, тунгалаг */
+        .comment-box { 
+            width: 100%; 
+            background: rgba(255,255,255,0.3); 
+            border: none; 
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 10px 5px; 
+            font-family: 'Montserrat'; 
+            font-size: 0.85rem; 
+            color: #333;
+            resize: none; 
+            outline: none; 
+            box-sizing: border-box; 
+            height: 45px; 
+        }
 
         /* COLORS */
         body.bg-w1 .w-num, body.bg-w1 .intro-num, body.bg-w1 .cal-badge, body.bg-w1 .star.active { color: var(--w1); }
@@ -103,7 +128,6 @@
     <div id="bgMain"><div id="aura"></div></div>
     <canvas id="canvas-snow"></canvas>
 
-    <!-- Splash Screen -->
     <div id="splash">
         <div style="text-align: center;">
             <img src="logo.png" style="width:120px; animation: scaleIn 1s ease-out;">
@@ -112,9 +136,8 @@
         </div>
     </div>
 
-    <!-- Week Selector -->
     <div id="weekSelector">
-        <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:4px; color:#333;">ЦЭС СОНГОХ</h2>
+        <h2 style="font-family:'Cinzel'; margin-bottom:40px; letter-spacing:5px;">ЦЭС СОНГОХ</h2>
         <div class="week-btn" style="border-top: 5px solid #d4af37; color: #d4af37;" onclick="jumpTo(0)"><h3>WEEK 1</h3><small>1-р долоо хоног</small></div>
         <div class="week-btn" style="border-top: 5px solid #e63946; color: #e63946;" onclick="jumpTo(6)"><h3>WEEK 2</h3><small>2-р долоо хоног</small></div>
         <div class="week-btn" style="border-top: 5px solid #4fc3f7; color: #4fc3f7;" onclick="jumpTo(12)"><h3>WEEK 3</h3><small>3-р долоо хоног</small></div>
@@ -143,11 +166,11 @@
             { week: 2, day: "Пүрэв", name: "Өдрийн амттай хоол 2.4", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "thu2.png" },
             { week: 2, day: "Баасан", name: "Өдрийн амттай хоол 2.5", cal: "600", p: "30г", f: "20г", c: "80г", fi: "5г", img: "fri2.png" },
             { week: 3, type: 'intro' },
-            { week: 3, day: "Даваа", name: "Өдрийн амттай хоол 3.1", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
-            { week: 3, day: "Мягмар", name: "Өдрийн амттай хоол 3.2", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
-            { week: 3, day: "Лхагва", name: "Өдрийн амттай хоол 3.3", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
-            { week: 3, day: "Пүрэв", name: "Өдрийн амттай хоол 3.4", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
-            { week: 3, day: "Баасан", name: "Өдрийн амттай хоол 3.5", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
+            { week: 3, day: "Даваа", name: "3.1 Өдрийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "mon3.png" },
+            { week: 3, day: "Мягмар", name: "3.2 Өдрийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "tue3.png" },
+            { week: 3, day: "Лхагва", name: "3.3 Өдрийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "wed3.png" },
+            { week: 3, day: "Пүрэв", name: "3.4 Өдрийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "thu3.png" },
+            { week: 3, day: "Баасан", name: "3.5 Өдрийн амттай хоол", cal: "650", p: "35г", f: "25г", c: "85г", fi: "10г", img: "fri3.png" }
         ];
 
         let mainSwiper;
@@ -169,11 +192,7 @@
                 } else {
                     wrapper.innerHTML += `
                     <div class="swiper-slide" data-week="${m.week}">
-                        <div class="slide-header">
-                            <h2 class="w-num">WEEK ${m.week}</h2>
-                            <div class="d-name">${m.day}</div>
-                            <div class="f-name">${m.name}</div>
-                        </div>
+                        <div class="slide-header"><h2 class="w-num">WEEK ${m.week}</h2><div class="d-name">${m.day}</div><div class="f-name">${m.name}</div></div>
                         <div class="food-wrap">
                             <div class="img-container">
                                 <img src="${m.img}" class="food-img" onerror="this.style.opacity='0.1'">
@@ -187,10 +206,13 @@
                                 <div class="n-box"><b>${m.c}</b><i>Нүүрс</i></div>
                                 <div class="n-box"><b>${m.fi}</b><i>Эслэг</i></div>
                             </div>
-                            <div class="star-row">
-                                <span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span>
+                            <div class="rating-container">
+                                <div class="rating-label">ҮНЭЛГЭЭ:</div>
+                                <div class="star-row">
+                                    <span class="star" onclick="rate(this,1)">★</span><span class="star" onclick="rate(this,2)">★</span><span class="star" onclick="rate(this,3)">★</span><span class="star" onclick="rate(this,4)">★</span><span class="star" onclick="rate(this,5)">★</span>
+                                </div>
                             </div>
-                            <textarea class="comment-box" placeholder="Сэтгэгдэл үлдээх..."></textarea>
+                            <textarea class="comment-box" placeholder="Сэтгэгдэл бичих..."></textarea>
                         </div>
                     </div>`;
                 }
@@ -205,7 +227,6 @@
                         document.body.className = 'bg-w' + week;
                         updateAura(week);
 
-                        // AUTO-ADVANCE FOR INTRO (3 SEC)
                         clearTimeout(introTimer);
                         if (activeSlide.classList.contains('intro-slide')) {
                             introTimer = setTimeout(() => {
@@ -232,7 +253,6 @@
             mainSwiper.update(); 
             mainSwiper.slideTo(index, 0);
             
-            // Force first intro timer
             const activeSlide = mainSwiper.slides[index];
             if (activeSlide.classList.contains('intro-slide')) {
                 clearTimeout(introTimer);
@@ -243,7 +263,7 @@
         function showMenu() { document.getElementById('weekSelector').style.display = 'flex'; document.querySelector('.swiper').style.display = 'none'; document.getElementById('backBtn').style.display = 'none'; }
         function rate(el, score) { const stars = el.parentElement.querySelectorAll('.star'); stars.forEach((s, i) => i < score ? s.classList.add('active') : s.classList.remove('active')); }
 
-        // Snow animation
+        // Snow Animation
         const canvas = document.getElementById('canvas-snow');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -251,7 +271,7 @@
         window.addEventListener('resize', resize); resize();
         class Snowflake {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.5 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -10; this.size = Math.random() * 1.2 + 0.5; this.speed = Math.random() * 0.5 + 0.2; this.opacity = Math.random() * 0.3; }
             update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.fillStyle = `rgba(0, 0, 0, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
